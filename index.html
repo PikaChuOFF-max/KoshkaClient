@@ -7,17 +7,17 @@
     
     <!-- Иконки и Шрифты -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&display=swap" rel="stylesheet">
 
     <style>
         :root {
             --primary: #ff2df7; 
             --secondary: #7000ff;
-            --dark: #09090b;
-            --card-bg: #121217;
+            --dark: #050507;
+            --card-bg: rgba(18, 18, 23, 0.7);
             --text: #ffffff;
             --accent: #00f2ff;
-            --disabled: #333338;
+            --transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
         }
 
         * {
@@ -34,27 +34,71 @@
             overflow-x: hidden;
         }
 
+        /* Анимированный фон */
+        .bg-glow {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+            overflow: hidden;
+            background: radial-gradient(circle at 50% 50%, #120a2a 0%, #050507 100%);
+        }
+
+        .blob {
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: var(--secondary);
+            filter: blur(150px);
+            border-radius: 50%;
+            opacity: 0.2;
+            animation: move 20s infinite alternate;
+        }
+
+        @keyframes move {
+            from { transform: translate(-10%, -10%); }
+            to { transform: translate(20%, 20%); }
+        }
+
         /* Навигация */
         nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 20px 8%;
-            background: rgba(9, 9, 11, 0.9);
+            background: rgba(9, 9, 11, 0.0);
             position: fixed;
             width: 100%;
             top: 0;
             z-index: 1000;
-            backdrop-filter: blur(15px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            transition: var(--transition);
+            backdrop-filter: blur(0px);
         }
 
-        .logo { font-size: 1.6rem; font-weight: 900; letter-spacing: 1px; }
-        .logo span { color: var(--primary); text-shadow: 0 0 15px var(--primary); }
+        nav.scrolled {
+            background: rgba(9, 9, 11, 0.8);
+            padding: 15px 8%;
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .logo { 
+            font-size: 1.6rem; 
+            font-weight: 900; 
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        .logo span { color: var(--primary); text-shadow: 0 0 20px var(--primary); }
 
         .nav-links { display: flex; list-style: none; }
         .nav-links li { margin-left: 35px; }
-        .nav-links a { text-decoration: none; color: #eee; transition: 0.3s; font-weight: 600; font-size: 0.9rem; }
+        .nav-links a { 
+            text-decoration: none; 
+            color: rgba(255,255,255,0.7); 
+            transition: var(--transition); 
+            font-weight: 600; 
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+        }
         .nav-links a:hover { color: var(--primary); }
 
         /* Hero Section */
@@ -64,227 +108,234 @@
             align-items: center;
             justify-content: center;
             text-align: center;
-            background: radial-gradient(circle at top right, #2a004f 0%, #09090b 100%);
             padding: 120px 20px 60px;
         }
 
         .hero-content h1 {
-            font-size: clamp(3.5rem, 12vw, 7rem);
-            line-height: 1;
-            margin-bottom: 20px;
-            text-transform: uppercase;
-            background: linear-gradient(to bottom, #fff, #888);
+            font-size: clamp(3rem, 10vw, 6.5rem);
+            line-height: 0.9;
+            margin-bottom: 25px;
+            font-weight: 900;
+            background: linear-gradient(to bottom, #fff 30%, rgba(255,255,255,0.5));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            font-weight: 900;
+            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5));
         }
 
         .hero-content p {
-            font-size: 1.1rem;
-            max-width: 750px;
-            margin: 0 auto 40px;
-            color: #aaa;
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 45px;
+            color: rgba(255,255,255,0.6);
+            font-weight: 400;
         }
 
-        /* Секция загрузки */
-        .download-wrapper {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .main-download-area {
-            margin-bottom: 40px;
-        }
-
-        /* Кнопка Windows и выбор архитектуры */
-        .win-selector {
-            display: inline-block;
-            position: relative;
-        }
+        /* Кнопки загрузки */
+        .win-selector { position: relative; display: inline-block; }
 
         .btn-win-main {
-            padding: 20px 50px;
+            padding: 22px 45px;
             background: linear-gradient(45deg, var(--primary), var(--secondary));
             color: white;
             text-decoration: none;
-            border-radius: 15px;
+            border-radius: 100px;
             font-weight: 800;
             text-transform: uppercase;
-            transition: 0.4s;
+            letter-spacing: 1px;
+            transition: var(--transition);
             display: inline-flex;
             align-items: center;
             gap: 15px;
             cursor: pointer;
             border: none;
-            box-shadow: 0 10px 40px rgba(112, 0, 255, 0.4);
+            box-shadow: 0 10px 40px rgba(255, 45, 247, 0.3);
         }
 
         .btn-win-main:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 50px rgba(112, 0, 255, 0.6);
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 20px 50px rgba(255, 45, 247, 0.5);
         }
 
         .arch-options {
+            position: absolute;
+            top: calc(100% + 15px);
+            left: 50%;
+            transform: translateX(-50%) translateY(10px);
+            background: rgba(20, 20, 25, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 15px;
+            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.1);
             display: none;
             grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-top: 15px;
-            animation: fadeInDown 0.4s forwards;
+            gap: 10px;
+            width: 350px;
+            z-index: 10;
         }
 
-        .arch-options.active { display: grid; }
+        .arch-options.active {
+            display: grid;
+            animation: slideUp 0.4s forwards;
+        }
+
+        @keyframes slideUp {
+            to { transform: translateX(-50%) translateY(0); opacity: 1; }
+        }
 
         .btn-arch {
             padding: 15px;
-            border-radius: 12px;
+            border-radius: 15px;
             text-decoration: none;
-            font-weight: 700;
-            transition: 0.3s;
-            font-size: 0.9rem;
-            display: flex;
-            flex-direction: column;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            color: white;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: var(--transition);
+            text-align: left;
         }
 
-        .btn-arch.enabled:hover { background: rgba(255,255,255,0.15); border-color: var(--primary); }
-
-        .btn-arch.disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            color: #666;
+        .btn-arch:not(.disabled):hover {
+            background: rgba(255,255,255,0.1);
+            border-color: var(--primary);
         }
 
-        .btn-arch span { font-size: 0.7rem; color: var(--accent); opacity: 0.8; }
-        .btn-arch.disabled span { color: #555; }
+        .btn-arch div { color: #fff; font-weight: 700; font-size: 0.9rem; }
+        .btn-arch span { font-size: 0.7rem; color: var(--accent); }
 
-        /* Другие платформы */
-        .other-platforms {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 15px;
-            margin-top: 40px;
+        .btn-arch.disabled { opacity: 0.4; cursor: not-allowed; }
+
+        /* Секции */
+        section { padding: 120px 8%; opacity: 0; transform: translateY(30px); transition: 1s all ease-out; }
+        section.visible { opacity: 1; transform: translateY(0); }
+
+        .section-title {
+            font-size: 3.5rem;
+            margin-bottom: 70px;
+            text-align: center;
+            font-weight: 900;
+            letter-spacing: -1px;
+        }
+        .section-title span {
+            background: linear-gradient(to right, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
-        .btn-other {
-            padding: 12px 25px;
-            background: var(--disabled);
-            color: #777;
-            text-decoration: none;
-            border-radius: 10px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            cursor: not-allowed;
-            border: 1px solid rgba(255,255,255,0.03);
-            transition: 0.3s;
-        }
-
-        .btn-other:hover { background: #1a1a1f; }
-
-        .coming-soon {
-            font-size: 0.6rem;
-            background: #444;
-            color: #aaa;
-            padding: 2px 6px;
-            border-radius: 4px;
-            margin-left: 5px;
-            text-transform: uppercase;
-        }
-
-        /* Функции */
-        section { padding: 100px 8%; }
-        .section-title { font-size: 3rem; margin-bottom: 60px; text-align: center; font-weight: 900; text-transform: uppercase;}
-        .section-title span { color: var(--primary); }
-
+        /* Карточки функций */
         .features-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 25px;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
         }
 
         .feature-card {
             background: var(--card-bg);
-            padding: 40px;
-            border-radius: 25px;
+            padding: 50px 40px;
+            border-radius: 35px;
             border: 1px solid rgba(255, 255, 255, 0.05);
-            transition: 0.4s;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.03), transparent);
+            transform: translateX(-100%);
+            transition: 0.6s;
         }
 
         .feature-card:hover {
-            transform: translateY(-10px);
+            transform: translateY(-15px);
             border-color: var(--primary);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
         }
 
+        .feature-card:hover::before { transform: translateX(100%); }
+
         .feature-card i {
-            font-size: 2.5rem;
-            background: linear-gradient(var(--primary), var(--secondary));
+            font-size: 3rem;
+            margin-bottom: 30px;
+            display: block;
+            background: linear-gradient(45deg, var(--primary), var(--accent));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 25px;
         }
+
+        .feature-card h3 { font-size: 1.5rem; margin-bottom: 15px; letter-spacing: 0.5px; }
+        .feature-card p { color: rgba(255,255,255,0.5); font-size: 0.95rem; }
 
         /* Галерея */
         .gallery-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 40px;
         }
 
         .img-box {
             position: relative;
-            border-radius: 20px;
+            border-radius: 30px;
             overflow: hidden;
             border: 1px solid rgba(255, 255, 255, 0.1);
+            aspect-ratio: 16/9;
         }
 
-        .img-box img { width: 100%; display: block; transition: 0.6s; }
-        .img-box:hover img { transform: scale(1.1); }
+        .img-box img { width: 100%; height: 100%; object-fit: cover; transition: 0.8s cubic-bezier(0.2, 1, 0.2, 1); }
+        .img-box:hover img { transform: scale(1.1); filter: brightness(0.7); }
+
+        .img-caption {
+            position: absolute;
+            bottom: 0; left: 0; width: 100%;
+            padding: 30px;
+            background: linear-gradient(transparent, rgba(0,0,0,0.8));
+            transform: translateY(20px);
+            opacity: 0;
+            transition: 0.4s;
+        }
+
+        .img-box:hover .img-caption { transform: translateY(0); opacity: 1; }
 
         /* Футер */
         footer {
-            padding: 80px 8% 40px;
+            padding: 100px 8% 50px;
             text-align: center;
-            background: #050507;
+            background: #020203;
             border-top: 1px solid rgba(255, 255, 255, 0.05);
         }
-
-        .footer-logo { font-size: 2rem; font-weight: 900; margin-bottom: 20px; }
-        .footer-logo span { color: var(--primary); }
 
         .tg-link { 
             color: #fff; 
             text-decoration: none; 
-            transition: 0.3s; 
             background: #24A1DE; 
-            padding: 12px 30px; 
-            border-radius: 50px;
-            font-weight: 600;
+            padding: 18px 40px; 
+            border-radius: 100px;
+            font-weight: 700;
             display: inline-flex;
             align-items: center;
-            gap: 10px;
-            margin-bottom: 30px;
+            gap: 12px;
+            margin-bottom: 40px;
+            transition: var(--transition);
         }
-        .tg-link:hover { transform: scale(1.05); box-shadow: 0 0 20px rgba(36, 161, 222, 0.4); }
+        .tg-link:hover { transform: scale(1.05); box-shadow: 0 0 30px rgba(36, 161, 222, 0.4); }
 
-        @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
+        /* Адаптивность */
         @media (max-width: 768px) {
             .nav-links { display: none; }
             .hero-content h1 { font-size: 3.5rem; }
+            .gallery-grid { grid-template-columns: 1fr; }
+            .arch-options { width: 90vw; grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
 
-    <nav>
+    <div class="bg-glow">
+        <div class="blob" style="top: 10%; left: 10%;"></div>
+        <div class="blob" style="bottom: 10%; right: 10%; background: var(--primary); animation-delay: -5s;"></div>
+    </div>
+
+    <nav id="navbar">
         <div class="logo">KOSHKA <span>CLIENT</span></div>
         <ul class="nav-links">
             <li><a href="#features">ФУНКЦИИ</a></li>
@@ -296,34 +347,22 @@
     <header class="hero" id="home">
         <div class="hero-content">
             <h1>KOSHKA CLIENT</h1>
-            <p>Новый стандарт DDNet. Уникальный функционал, оптимизация и эстетика в одном клиенте.</p>
+            <p>Новый стандарт DDNet. Уникальный функционал, оптимизация и эстетика в одном клиенте для тех, кто ценит комфорт.</p>
             
-            <div class="download-wrapper">
-                <!-- Главная кнопка Windows -->
-                <div class="main-download-area">
-                    <div class="win-selector">
-                        <button class="btn-win-main" onclick="toggleArch()">
-                            <i class="fab fa-windows"></i> СКАЧАТЬ ДЛЯ WINDOWS
-                        </button>
-                        
-                        <div class="arch-options" id="archList">
-                            <a href="https://drive.google.com/file/d/1-6LbPjCHapmdwkHcx9GxKUfmwqYoAmy5/view?usp=sharing" class="btn-arch enabled" target="_blank">
-                                Windows x64
-                                <span>Доступно</span>
-                            </a>
-                            <div class="btn-arch disabled">
-                                Windows x84
-                                <span>Скоро добавлю</span>
-                            </div>
-                        </div>
+            <div class="win-selector">
+                <button class="btn-win-main" onclick="toggleArch(event)">
+                    <i class="fab fa-windows"></i> СКАЧАТЬ ДЛЯ WINDOWS
+                </button>
+                
+                <div class="arch-options" id="archList">
+                    <a href="https://drive.google.com/file/d/1-6LbPjCHapmdwkHcx9GxKUfmwqYoAmy5/view?usp=sharing" class="btn-arch" target="_blank">
+                        <div>Windows x64</div>
+                        <span>Рекомендуется</span>
+                    </a>
+                    <div class="btn-arch disabled">
+                        <div>Windows x84</div>
+                        <span>В разработке</span>
                     </div>
-                </div>
-
-                <!-- Другие платформы (Серые) -->
-                <div class="other-platforms">
-                    <div class="btn-other"><i class="fab fa-linux"></i> Linux <span class="coming-soon">Soon</span></div>
-                    <div class="btn-other"><i class="fab fa-apple"></i> MacOS <span class="coming-soon">Soon</span></div>
-                    <div class="btn-other"><i class="fab fa-android"></i> Android <span class="coming-soon">Soon</span></div>
                 </div>
             </div>
         </div>
@@ -335,37 +374,37 @@
             <div class="feature-card">
                 <i class="fas fa-compact-disc"></i>
                 <h3>Floating Islet</h3>
-                <p>Красивый интерактивный островок для управления музыкой прямо в игре без сворачивания окон.</p>
+                <p>Интерактивный островок управления музыкой. Переключай треки, не отвлекаясь от карты.</p>
             </div>
 
             <div class="feature-card">
                 <i class="fas fa-snowflake"></i>
                 <h3>Winter Vibe</h3>
-                <p>Полностью переработанный зимний стиль меню для создания особой атмосферы.</p>
+                <p>Уникальный зимний интерфейс с мягкими анимациями снега и обновленной палитрой.</p>
             </div>
 
             <div class="feature-card">
                 <i class="fas fa-image"></i>
                 <h3>Custom Background</h3>
-                <p>Меняй фоны меню и игры через PNG файлы — мгновенно и без лишних настроек.</p>
+                <p>Устанавливай любые PNG изображения как фон. Твой клиент — твои правила.</p>
             </div>
 
             <div class="feature-card">
                 <i class="fas fa-cat"></i>
                 <h3>Pet System</h3>
-                <p>Добавь своего питомца в игру. Любая картинка может стать твоим верным спутником.</p>
+                <p>Возьми с собой виртуального друга. Любой спрайт может стать твоим питомцем.</p>
             </div>
 
             <div class="feature-card">
                 <i class="fas fa-keyboard"></i>
-                <h3>Interactive HUD</h3>
-                <p>Интеллектуальный худ, который подстраивается под твои действия и открытие чата.</p>
+                <h3>Dynamic HUD</h3>
+                <p>Умный интерфейс, который скрывает лишнее, когда оно тебе не нужно.</p>
             </div>
 
             <div class="feature-card">
                 <i class="fas fa-users-cog"></i>
-                <h3>Profiles & WarList</h3>
-                <p>Профессиональные инструменты для управления профилями и списками игроков.</p>
+                <h3>WarList Pro</h3>
+                <p>Расширенная система отслеживания игроков и управления контактами в реальном времени.</p>
             </div>
         </div>
     </section>
@@ -373,46 +412,75 @@
     <section id="media">
         <h2 class="section-title">ГАЛЕРЕЯ</h2>
         <div class="gallery-grid">
-            <div class="img-box"><img src="menu.jpg" alt="Menu"><div style="padding:15px; background: rgba(0,0,0,0.5); font-weight: 600;">Главное меню</div></div>
-            <div class="img-box"><img src="game.jpg" alt="Game"><div style="padding:15px; background: rgba(0,0,0,0.5); font-weight: 600;">В процессе игры</div></div>
-            <div class="img-box"><img src="warlist.jpg" alt="Warlist"><div style="padding:15px; background: rgba(0,0,0,0.5); font-weight: 600;">Система WarList</div></div>
+            <div class="img-box">
+                <img src="menu.jpg" alt="Menu">
+                <div class="img-caption">Главное меню в стиле Winter</div>
+            </div>
+            <div class="img-box">
+                <img src="game.jpg" alt="Game">
+                <div class="img-caption">Игровой процесс и HUD</div>
+            </div>
+            <div class="img-box">
+                <img src="warlist.jpg" alt="Warlist">
+                <div class="img-caption">Интерфейс WarList</div>
+            </div>
         </div>
     </section>
 
     <footer>
-        <div class="footer-logo">KOSHKA <span>CLIENT</span></div>
+        <div class="logo" style="margin-bottom: 20px;">KOSHKA <span>CLIENT</span></div>
         <a href="https://t.me/KoshkaClientF" class="tg-link" target="_blank">
-            <i class="fab fa-telegram"></i> Перейти в Telegram
+            <i class="fab fa-telegram"></i> ПРИСОЕДИНИТЬСЯ В TELEGRAM
         </a>
-        <p style="color: #444; font-size: 0.9rem;">
-            &copy; 2025-2026 Koshka Client Team. Все права защищены.
+        <p style="color: rgba(255,255,255,0.2); font-size: 0.8rem; letter-spacing: 1px;">
+            &copy; 2025 KOSHKA TEAM. DESIGNED FOR TEERACERS.
         </p>
     </footer>
 
     <script>
-        function toggleArch() {
+        // Переключение списка архитектур
+        function toggleArch(e) {
+            e.stopPropagation();
             const list = document.getElementById('archList');
             list.classList.toggle('active');
         }
 
-        // Закрытие при клике мимо кнопки
-        window.onclick = function(event) {
-            if (!event.target.matches('.btn-win-main')) {
-                const list = document.getElementById('archList');
-                if (list.classList.contains('active')) {
-                    list.classList.remove('active');
-                }
-            }
+        // Закрытие при клике мимо
+        window.onclick = function() {
+            document.getElementById('archList').classList.remove('active');
         }
+
+        // Эффект скролла навигации
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        });
+
+        // Появление секций при скролле (Intersection Observer)
+        const observerOptions = { threshold: 0.1 };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('section').forEach(section => {
+            observer.observe(section);
+        });
 
         // Плавный скролл
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
-                if(this.getAttribute('href').startsWith("#")) {
-                    e.preventDefault();
-                    document.querySelector(this.getAttribute('href')).scrollIntoView({
-                        behavior: 'smooth'
-                    });
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
                 }
             });
         });
