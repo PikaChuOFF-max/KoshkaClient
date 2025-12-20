@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Koshka Client | DDNet Next-Gen</title>
+    <title>Koshka Client</title>
     
     <!-- Иконки и Шрифты -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -14,25 +14,21 @@
             --primary: #ff2df7; 
             --secondary: #7000ff;
             --dark: #050507;
-            --card-bg: rgba(18, 18, 23, 0.7);
+            --glass: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.12);
+            --glass-heavy: rgba(10, 10, 15, 0.7);
             --text: #ffffff;
             --accent: #00f2ff;
             --spotify-green: #1DB954;
             --transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        /* КУРСОР */
+        /* КУРСОР И ОБЩИЕ СТИЛИ */
         * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+            margin: 0; padding: 0; box-sizing: border-box;
             font-family: 'Montserrat', sans-serif;
             scroll-behavior: smooth;
-            cursor: url('gui_cursor.png'), auto;
-        }
-
-        a, button, .control-btn, .dynamic-island, .btn-arch, .img-box, .feature-card {
-            cursor: url('gui_cursor.png'), pointer;
+            cursor: url('gui_cursor.png'), auto !important;
         }
 
         body {
@@ -42,54 +38,42 @@
             overflow-x: hidden;
         }
 
-        /* ФОНОВЫЕ ПЯТНА */
+        /* АНИМИРОВАННЫЙ ФОН */
         .bg-glow {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -3;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -3;
             background: radial-gradient(circle at 50% 50%, #120a2a 0%, #050507 100%);
         }
         .blob {
-            position: absolute; width: 600px; height: 600px;
-            background: var(--secondary); filter: blur(150px);
-            border-radius: 50%; opacity: 0.12;
+            position: absolute; width: 700px; height: 700px;
+            background: var(--secondary); filter: blur(180px);
+            border-radius: 50%; opacity: 0.15;
             animation: move 25s infinite alternate;
         }
         @keyframes move { from { transform: translate(-10%, -10%); } to { transform: translate(30%, 20%); } }
 
-        /* СНЕГ */
-        #snow-canvas {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            z-index: -2;
-            pointer-events: none;
-        }
+        #snow-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; pointer-events: none; opacity: 0.6; }
 
-        /* DYNAMIC ISLAND */
-        .island-wrapper {
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 2000;
-        }
+        /* DYNAMIC ISLAND (ВОЗВРАЩЕН ОРИГИНАЛЬНЫЙ ВИД + СТЕКЛО) */
+        .island-wrapper { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 2000; }
         .dynamic-island {
-            background: #000000;
-            width: 320px; height: 65px;
-            padding: 12px 22px;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(25px) saturate(180%);
+            -webkit-backdrop-filter: blur(25px) saturate(180%);
+            width: 320px; height: 65px; 
+            padding: 12px 22px; 
             border-radius: 35px;
-            display: flex; flex-direction: column;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
-            border: 1px solid rgba(255,255,255,0.08);
-            transition: var(--transition);
+            display: flex; flex-direction: column; 
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5), inset 0 0 15px rgba(255,255,255,0.05);
+            transition: var(--transition); 
             overflow: hidden;
         }
-        .dynamic-island:hover {
-            height: 125px; width: 350px;
-            background: #050505;
-            border-color: rgba(255, 255, 255, 0.15);
+        .dynamic-island:hover { 
+            height: 125px; width: 350px; 
+            background: rgba(10, 10, 15, 0.85); 
+            border-color: rgba(255, 255, 255, 0.25);
         }
+
         .island-top { display: flex; align-items: center; justify-content: space-between; min-height: 40px; }
         .spotify-icon { color: var(--spotify-green); font-size: 32px; margin-right: 15px; }
         .song-info { flex-grow: 1; display: flex; flex-direction: column; }
@@ -108,7 +92,7 @@
             margin-top: 15px; opacity: 0; transform: translateY(10px); transition: 0.3s;
         }
         .dynamic-island:hover .island-controls { opacity: 1; transform: translateY(0); }
-        .control-btn { color: #888; font-size: 20px; transition: 0.2s; }
+        .control-btn { color: #888; font-size: 20px; transition: 0.2s; cursor: pointer; }
         .control-btn:hover { color: #fff; transform: scale(1.2); }
         
         .timeline-container {
@@ -123,139 +107,112 @@
         /* НАВИГАЦИЯ */
         nav {
             display: flex; justify-content: space-between; align-items: center;
-            padding: 25px 8%; position: fixed; width: 100%; top: 0; z-index: 1000;
-            transition: 0.4s;
+            padding: 25px 8%; position: fixed; width: 100%; top: 0; z-index: 1000; transition: 0.4s;
         }
-        nav.scrolled { background: rgba(9, 9, 11, 0.85); padding: 15px 8%; backdrop-filter: blur(20px); }
+        nav.scrolled { background: rgba(5, 5, 8, 0.7); backdrop-filter: blur(20px); padding: 15px 8%; border-bottom: 1px solid var(--glass-border); }
         .logo { font-size: 1.6rem; font-weight: 900; letter-spacing: 1px; }
-        .logo span { color: var(--primary); }
+        .logo span { color: var(--primary); text-shadow: 0 0 15px var(--primary); }
         .nav-links { display: flex; list-style: none; }
         .nav-links li { margin-left: 35px; }
-        .nav-links a { text-decoration: none; color: #aaa; font-weight: 600; font-size: 0.85rem; transition: 0.3s; }
+        .nav-links a { text-decoration: none; color: #ccc; font-weight: 600; font-size: 0.85rem; transition: 0.3s; }
         .nav-links a:hover { color: var(--primary); }
 
-        /* HERO */
-        .hero {
-            min-height: 100vh; display: flex; align-items: center; justify-content: center;
-            text-align: center; padding: 150px 20px 100px;
-        }
+        /* HERO SECTION */
+        .hero { min-height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center; padding: 150px 20px 100px; }
         .hero-content h1 {
             font-size: clamp(3.5rem, 12vw, 7.5rem); line-height: 0.9; margin-bottom: 25px;
             background: linear-gradient(to bottom, #fff, #666); -webkit-background-clip: text;
             -webkit-text-fill-color: transparent; font-weight: 900;
         }
-        .hero-content p { color: #aaa; max-width: 750px; margin: 0 auto 45px; font-size: 1.2rem; }
+        .hero-content p { color: rgba(255,255,255,0.6); max-width: 750px; margin: 0 auto 45px; font-size: 1.2rem; }
 
-        /* КНОПКА СКАЧИВАНИЯ */
-        .download-wrapper { position: relative; display: inline-block; }
+        /* КНОПКА СКАЧИВАНИЯ И АНИМИРОВАННОЕ МЕНЮ */
+        .download-wrapper { position: relative; display: inline-block; z-index: 100; }
         .btn-win-main {
-            padding: 22px 50px; background: linear-gradient(45deg, var(--primary), var(--secondary));
-            color: white; border: none; border-radius: 100px; font-weight: 800;
-            text-transform: uppercase; transition: 0.4s; display: flex; align-items: center; gap: 15px;
-            box-shadow: 0 10px 40px rgba(255, 45, 247, 0.3);
+            padding: 22px 50px; background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px);
+            color: white; border: 1px solid var(--glass-border); border-radius: 100px; 
+            font-weight: 800; text-transform: uppercase; transition: 0.4s; 
+            display: flex; align-items: center; gap: 15px; cursor: pointer;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3), inset 0 0 15px rgba(255,255,255,0.05);
         }
-        .btn-win-main:hover { transform: translateY(-5px); box-shadow: 0 15px 50px rgba(255, 45, 247, 0.5); }
-        
+        .btn-win-main:hover { background: var(--primary); border-color: var(--primary); transform: translateY(-3px); box-shadow: 0 15px 50px rgba(255, 45, 247, 0.4); }
+
         .arch-options {
-            position: absolute; top: 120%; left: 50%; transform: translateX(-50%) translateY(10px);
-            background: rgba(15, 15, 20, 0.98); backdrop-filter: blur(15px);
-            padding: 15px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1);
-            display: none; grid-template-columns: 1fr 1fr; gap: 12px; width: 360px; z-index: 100;
+            position: absolute; top: calc(100% + 15px); left: 50%; width: 380px; padding: 12px;
+            background: rgba(15, 15, 22, 0.85); backdrop-filter: blur(30px) saturate(150%);
+            -webkit-backdrop-filter: blur(30px) saturate(150%); border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 30px 60px rgba(0,0,0,0.8);
+            display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+            /* Анимация */
+            opacity: 0; visibility: hidden; pointer-events: none;
+            transform: translateX(-50%) translateY(20px) scale(0.9);
+            transition: opacity 0.4s, transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), visibility 0.4s;
         }
-        .arch-options.active { display: grid; animation: fadeInUp 0.4s forwards; }
-        @keyframes fadeInUp { to { opacity: 1; transform: translateX(-50%) translateY(0); } }
+        .arch-options.active { opacity: 1; visibility: visible; pointer-events: auto; transform: translateX(-50%) translateY(0) scale(1); }
 
         .btn-arch {
-            padding: 15px; border-radius: 15px; text-decoration: none; background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.05); transition: 0.3s; text-align: left;
-            display: block;
+            padding: 18px; border-radius: 18px; text-decoration: none; background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05); transition: 0.3s; text-align: left;
         }
-        .btn-arch:hover { background: rgba(255,255,255,0.1); border-color: var(--primary); }
-        .btn-arch b { display: block; color: #fff; font-size: 0.9rem; }
-        .btn-arch span { font-size: 0.7rem; color: var(--accent); }
+        .btn-arch:hover { background: rgba(255, 255, 255, 0.1); border-color: var(--primary); transform: translateY(-2px); }
+        .btn-arch b { display: block; color: #fff; font-size: 0.95rem; margin-bottom: 4px; }
+        .btn-arch span { font-size: 0.75rem; color: var(--accent); font-weight: 600; }
 
-        /* КАРТОЧКИ ФУНКЦИЙ */
-        section { padding: 120px 8%; opacity: 0; transform: translateY(50px); transition: 1s; }
+        /* КАРТОЧКИ ФУНКЦИЙ (3D Tilt) */
+        section { padding: 120px 8%; opacity: 0; transform: translateY(30px); transition: 1s; }
         section.visible { opacity: 1; transform: translateY(0); }
-        .section-title { font-size: 3.5rem; text-align: center; margin-bottom: 80px; font-weight: 900; text-transform: uppercase; }
+        .section-title { font-size: 3.5rem; text-align: center; margin-bottom: 80px; font-weight: 900; }
         .section-title span { color: var(--primary); }
 
-        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; perspective: 1000px; }
-        
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; perspective: 1500px; }
         .feature-card {
-            background: var(--card-bg); padding: 50px 40px; border-radius: 40px;
-            border: 1px solid rgba(255,255,255,0.05); backdrop-filter: blur(15px); 
-            position: relative; transform-style: preserve-3d;
-            /* Плавность движения: 0.6 сек с мягким завершением */
-            transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.3s ease, border-color 0.3s ease;
-            will-change: transform; /* Оптимизация для браузера */
+            background: var(--glass); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            padding: 50px 40px; border-radius: 40px; border: 1px solid var(--glass-border);
+            position: relative; transform-style: preserve-3d; transition: transform 0.1s ease, box-shadow 0.3s ease;
         }
-        
-        .feature-card:hover { 
-            border-color: rgba(255, 45, 247, 0.4); 
-            box-shadow: 0 25px 50px rgba(0,0,0,0.5); 
-            z-index: 10;
-        }
-        
-        .feature-card .glare {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at var(--x) var(--y), rgba(255,255,255,0.1) 0%, transparent 60%);
-            border-radius: 40px; pointer-events: none;
-        }
+        .feature-card:hover { border-color: var(--primary); box-shadow: 0 20px 50px rgba(0,0,0,0.3); }
         .feature-card i { 
-            font-size: 3.5rem; background: linear-gradient(var(--primary), var(--secondary)); 
+            font-size: 3.5rem; background: linear-gradient(45deg, var(--primary), var(--accent)); 
             -webkit-background-clip: text; -webkit-text-fill-color: transparent; 
             margin-bottom: 30px; display: block; transform: translateZ(50px); 
         }
         .feature-card h3 { font-size: 1.6rem; margin-bottom: 15px; transform: translateZ(30px); }
-        .feature-card p { color: #888; transform: translateZ(20px); }
+        .feature-card p { color: rgba(255,255,255,0.5); transform: translateZ(20px); }
 
         /* ГАЛЕРЕЯ */
         .gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 35px; }
-        .img-box { border-radius: 30px; overflow: hidden; position: relative; aspect-ratio: 16/9; border: 1px solid rgba(255,255,255,0.1); }
+        .img-box { border-radius: 30px; overflow: hidden; position: relative; aspect-ratio: 16/9; border: 1px solid var(--glass-border); }
         .img-box img { width: 100%; height: 100%; object-fit: cover; transition: 0.8s; }
         .img-box:hover img { transform: scale(1.1); filter: brightness(0.6); }
         .img-caption {
             position: absolute; bottom: 0; left: 0; width: 100%; padding: 30px;
-            background: linear-gradient(transparent, rgba(0,0,0,0.9));
-            transform: translateY(20px); opacity: 0; transition: 0.4s; font-weight: 600;
+            background: linear-gradient(transparent, rgba(0,0,0,0.8)); opacity: 0; transition: 0.4s;
+            font-weight: 600;
         }
-        .img-box:hover .img-caption { transform: translateY(0); opacity: 1; }
+        .img-box:hover .img-caption { opacity: 1; }
 
         /* ФУТЕР */
-        footer { padding: 100px 8% 50px; text-align: center; background: #020203; border-top: 1px solid rgba(255,255,255,0.05); }
+        footer { padding: 80px 8%; text-align: center; background: rgba(2, 2, 3, 0.8); backdrop-filter: blur(20px); border-top: 1px solid var(--glass-border); }
         .tg-link { 
-            display: inline-flex; align-items: center; gap: 12px; background: #24A1DE; 
-            color: white; padding: 18px 45px; border-radius: 100px; text-decoration: none; 
-            font-weight: 800; transition: 0.3s; margin-bottom: 40px;
+            display: inline-flex; align-items: center; gap: 12px; background: #24A1DE; color: white; padding: 18px 45px; 
+            border-radius: 100px; text-decoration: none; font-weight: 800; transition: 0.3s; margin-bottom: 30px;
         }
         .tg-link:hover { transform: scale(1.05); box-shadow: 0 0 30px rgba(36, 161, 222, 0.5); }
-
-        @media (max-width: 768px) {
-            .nav-links { display: none; }
-            .hero-content h1 { font-size: 3.5rem; }
-            .arch-options { width: 90vw; grid-template-columns: 1fr; }
-            .gallery-grid { grid-template-columns: 1fr; }
-        }
     </style>
 </head>
 <body>
 
+    <div class="bg-glow"><div class="blob"></div></div>
     <canvas id="snow-canvas"></canvas>
 
-    <div class="bg-glow">
-        <div class="blob" style="top: 10%; left: 5%;"></div>
-        <div class="blob" style="bottom: 15%; right: 5%; background: var(--primary);"></div>
-    </div>
-
-    <!-- Dynamic Island -->
+    <!-- ОСТРОВОК (ПОЛНОСТЬЮ ВОССТАНОВЛЕН ИЗ ОРИГИНАЛА) -->
     <div class="island-wrapper">
         <div class="dynamic-island">
             <div class="island-top">
                 <i class="fab fa-spotify spotify-icon"></i>
                 <div class="song-info">
-                    <div class="song-title">Песенка</div>
-                    <div class="song-artist">Руки Вверх</div>
+                    <div class="song-title">Koshka Client</div>
+                    <div class="song-artist">SU</div>
                 </div>
                 <div class="visualizer">
                     <div class="bar" style="animation-delay: 0.1s"></div>
@@ -290,17 +247,17 @@
             <p>Новый стандарт DDNet. Уникальный функционал, запредельная оптимизация и эстетика в одном клиенте. Почувствуй игру по-новому.</p>
             
             <div class="download-wrapper">
-                <button class="btn-win-main" onclick="toggleArch(event)">
+                <button class="btn-win-main" id="dlBtn">
                     <i class="fab fa-windows"></i> СКАЧАТЬ ДЛЯ WINDOWS
                 </button>
                 <div class="arch-options" id="archList">
                     <a href="https://drive.google.com/file/d/1LMvxjeVixyW77Y6FVSs9zv3QyhxWrdMq/view?usp=drive_link" class="btn-arch" target="_blank">
                         <b>Windows x64</b>
-                        <span>Рекомендуется</span>
+                        <span>РЕКОМЕНДУЕТСЯ</span>
                     </a>
                     <a href="https://drive.google.com/file/d/1Ev_KCAfKhfoGjcfZwhgNz5QsFgkm_PtT/view?usp=drive_link" class="btn-arch" target="_blank">
                         <b>Windows x86</b>
-                        <span>Для старых систем</span>
+                        <span>ДЛЯ СТАРЫХ ПК</span>
                     </a>
                 </div>
             </div>
@@ -311,40 +268,34 @@
         <h2 class="section-title">ПОЧЕМУ <span>KOSHKA?</span></h2>
         <div class="features-grid">
             <div class="feature-card">
-                <div class="glare"></div>
                 <i class="fas fa-compact-disc"></i>
                 <h3>Floating Islet</h3>
                 <p>Красивый интерактивный островок для управления музыкой прямо в игре без сворачивания окон.</p>
             </div>
             <div class="feature-card">
-                <div class="glare"></div>
                 <i class="fas fa-snowflake"></i>
                 <h3>Winter Vibe</h3>
-                <p>Полностью переработанный зимний стиль меню и интерфейса для создания особой атмосферы.</p>
+                <p>добавляет зимнюю атмосферу в меню игры: анимированный снегопад и декоративную гирлянду на заднем фоне.</p>
             </div>
             <div class="feature-card">
-                <div class="glare"></div>
                 <i class="fas fa-image"></i>
                 <h3>Custom Background</h3>
                 <p>Меняй фоны меню и игры через обычные PNG файлы — мгновенно и без сложных настроек.</p>
             </div>
             <div class="feature-card">
-                <div class="glare"></div>
                 <i class="fas fa-cat"></i>
                 <h3>Pet System</h3>
                 <p>Добавь своего питомца в игру. Любая картинка может стать твоим верным спутником в забегах.</p>
             </div>
             <div class="feature-card">
-                <div class="glare"></div>
                 <i class="fas fa-keyboard"></i>
                 <h3>Interactive HUD</h3>
-                <p>Интеллектуальный худ, который подстраивается под твои действия и открытие чата.</p>
+                <p>интерактивное управление элементами интерфейса прямо во время игры с помощью курсора через чат, без выхода в настройки.</p>
             </div>
             <div class="feature-card">
-                <div class="glare"></div>
                 <i class="fas fa-users-cog"></i>
                 <h3>Profiles & WarList</h3>
-                <p>Профессиональные инструменты для быстрого управления профилями и списками игроков.</p>
+                <p>управление списком игроков: создание профилей, быстрый доступ к информации, пометки и удобная навигация для отслеживания нужных игроков во время игры.</p>
             </div>
         </div>
     </section>
@@ -362,7 +313,7 @@
             </div>
             <div class="img-box">
                 <img src="warlist.jpg" alt="Warlist">
-                <div class="img-caption">Система WarList и контакты</div>
+                <div class="img-caption">Система WarList</div>
             </div>
         </div>
     </section>
@@ -372,118 +323,79 @@
         <a href="https://t.me/KoshkaClientF" class="tg-link" target="_blank">
             <i class="fab fa-telegram"></i> Перейти в Telegram
         </a>
-        <p style="opacity: 0.3; font-size: 0.85rem;">
-            &copy; 2025-2026 Koshka Client Team. Все права защищены.
-        </p>
+        <p style="opacity: 0.4; font-size: 0.85rem;">&copy; 2025-2026 Koshka Client Team. Все права защищены.</p>
     </footer>
 
     <script>
-        // --- ЛОГИКА СНЕГА ---
-        const canvas = document.getElementById('snow-canvas');
-        const ctx = canvas.getContext('2d');
-        let width, height, snowflakes = [];
-
-        function initSnow() {
-            width = window.innerWidth;
-            height = window.innerHeight;
-            canvas.width = width; canvas.height = height;
-            snowflakes = [];
-            for (let i = 0; i < 200; i++) snowflakes.push(new Snowflake());
-        }
-
-        class Snowflake {
-            constructor() { this.reset(); }
-            reset() {
-                this.x = Math.random() * width;
-                this.y = Math.random() * height - height;
-                this.size = Math.random() * 3 + 1;
-                this.speed = Math.random() * 1 + 0.5;
-                this.step = 0; this.stepSize = Math.random() / 30;
-                this.opacity = Math.random() * 0.5 + 0.3;
-            }
-            update() {
-                this.step += this.stepSize;
-                this.y += this.speed;
-                this.x += Math.sin(this.step) + windForce;
-                if (this.y > height || this.x > width || this.x < 0) {
-                    this.reset();
-                    this.y = -10;
-                }
-            }
-            draw() {
-                ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fill();
-            }
-        }
-
-        let windForce = 0.5, windTarget = 0.5;
-        function updateWind() {
-            if (Math.abs(windForce - windTarget) < 0.01) windTarget = (Math.random() - 0.5) * 2;
-            windForce += (windTarget - windForce) * 0.005;
-        }
-
-        function animateSnow() {
-            ctx.clearRect(0, 0, width, height);
-            updateWind();
-            snowflakes.forEach(f => { f.update(); f.draw(); });
-            requestAnimationFrame(animateSnow);
-        }
-
-        window.addEventListener('resize', initSnow);
-        initSnow();
-        animateSnow();
+        // ЛОГИКА ОКНА СКАЧИВАНИЯ
+        const dlBtn = document.getElementById('dlBtn');
+        const archList = document.getElementById('archList');
+        dlBtn.addEventListener('click', (e) => { e.stopPropagation(); archList.classList.toggle('active'); });
+        document.addEventListener('click', () => archList.classList.remove('active'));
 
         // --- 3D КАРТОЧКИ С ПЛАВНЫМ ВОЗВРАТОМ ---
-        const cards = document.querySelectorAll('.feature-card');
-        
-        cards.forEach(card => {
-            card.addEventListener('mousemove', e => {
-                const rect = card.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                
-                // Расчет углов (делим на 25 для мягкости)
-                const rotateX = (y - rect.height/2) / 25; 
-                const rotateY = (rect.width/2 - x) / 25;
-                
-                // Применяем трансформацию. Благодаря CSS transition 
-                // каждое микро-движение будет сглаживаться.
-                card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
-                
-                // Обновляем позицию блика
-                card.style.setProperty('--x', `${x}px`); 
-                card.style.setProperty('--y', `${y}px`);
-            });
-
-            // Когда курсор уходит, плавно возвращаем в исходное состояние
-            card.addEventListener('mouseleave', () => {
-                card.style.transform = `rotateX(0deg) rotateY(0deg) scale(1)`;
-            });
+    const cards = document.querySelectorAll('.feature-card');
+    
+    cards.forEach(card => {
+        card.addEventListener('mousemove', e => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            // Расчет углов (делим на 25 для мягкости)
+            const rotateX = (y - rect.height/2) / 25; 
+            const rotateY = (rect.width/2 - x) / 25;
+            
+            // Применяем трансформацию. Благодаря CSS transition 
+            // каждое микро-движение будет сглаживаться.
+            card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
+            
+            // Обновляем позицию блика
+            card.style.setProperty('--x', `${x}px`); 
+            card.style.setProperty('--y', `${y}px`);
         });
 
-        // --- СКРОЛЛ И ОКНО ВЫБОРА ---
-        function toggleArch(e) {
-            e.stopPropagation();
-            document.getElementById('archList').classList.toggle('active');
+        // Когда курсор уходит, плавно возвращаем в исходное состояние
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = `rotateX(0deg) rotateY(0deg) scale(1)`;
+        });
+    });
+
+        // Снег
+        const canvas = document.getElementById('snow-canvas');
+        const ctx = canvas.getContext('2d');
+        let w, h, snowflakes = [];
+        function initSnow() {
+            w = window.innerWidth; h = window.innerHeight;
+            canvas.width = w; canvas.height = h;
+            snowflakes = Array.from({length: 150}, () => ({ 
+                x: Math.random()*w, 
+                y: Math.random()*h, 
+                s: Math.random()*3+1, 
+                v: Math.random()*1+0.5,
+                o: Math.random()*0.5 + 0.3
+            }));
         }
-
-        window.onclick = () => document.getElementById('archList').classList.remove('active');
-
-        window.addEventListener('scroll', () => {
-            const nav = document.getElementById('navbar');
-            if (window.scrollY > 50) nav.classList.add('scrolled');
-            else nav.classList.remove('scrolled');
-        });
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) entry.target.classList.add('visible');
+        function draw() {
+            ctx.clearRect(0,0,w,h);
+            snowflakes.forEach(f => {
+                f.y += f.v; if(f.y > h) f.y = -10;
+                ctx.fillStyle = `rgba(255,255,255,${f.o})`;
+                ctx.beginPath(); ctx.arc(f.x, f.y, f.s, 0, Math.PI*2); ctx.fill();
             });
-        }, { threshold: 0.1 });
+            requestAnimationFrame(draw);
+        }
+        window.onresize = initSnow; initSnow(); draw();
 
-        document.querySelectorAll('section').forEach(s => observer.observe(s));
+        // Scroll Observer
+        const obs = new IntersectionObserver((es) => es.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible') }), {threshold:0.1});
+        document.querySelectorAll('section').forEach(s => obs.observe(s));
+
+        window.onscroll = () => {
+            const n = document.getElementById('navbar');
+            if(window.scrollY > 50) n.classList.add('scrolled');
+            else n.classList.remove('scrolled');
+        }
     </script>
 </body>
 </html>
