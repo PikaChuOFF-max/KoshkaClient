@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Koshka Client v1.1</title>
+    <title>Koshka Client v1.2</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
@@ -30,31 +30,15 @@
             background: #0f1115; border-bottom: 1px solid var(--border-color);
         }
         
-        /* ЛОГОТИП И ВЕРСИЯ */
-        .logo { 
-            font-size: 1.2rem; 
-            font-weight: 900; 
-            display: flex; 
-            align-items: center; 
-            gap: 5px; /* Отступ между KOSHKA и CLIENT */
-        }
+        .logo { font-size: 1.2rem; font-weight: 900; display: flex; align-items: center; gap: 5px; }
         .logo span { color: var(--primary); }
         
         .version-tag { 
-            background: #2a2e35; 
-            color: #fff; 
-            padding: 2px 10px; 
-            border-radius: 4px; 
-            font-size: 0.7rem; 
-            border: 1px solid rgba(255,255,255,0.2);
-            font-weight: 700;
-            margin-left: 15px; /* УВЕЛИЧЕННЫЙ ОТСТУП ОТ ТЕКСТА CLIENT */
-            display: inline-flex;
-            align-items: center;
-            height: fit-content;
+            background: #2a2e35; color: #fff; padding: 2px 10px; border-radius: 4px; 
+            font-size: 0.7rem; border: 1px solid rgba(255,255,255,0.2);
+            font-weight: 700; margin-left: 15px; display: inline-flex; align-items: center;
         }
 
-        /* Переключатель языка */
         .lang-switcher { display: flex; gap: 10px; }
         .lang-btn { 
             background: none; border: 1px solid var(--border-color); color: var(--text-dim);
@@ -64,7 +48,7 @@
         .lang-btn.active { border-color: var(--primary); color: white; background: rgba(0, 144, 255, 0.1); }
 
         /* HERO */
-        .hero { min-height: 80vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 120px 20px 60px; }
+        .hero { min-height: 60vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 120px 20px 60px; }
         .hero h1 { font-size: clamp(2.2rem, 8vw, 4.5rem); font-weight: 900; text-transform: uppercase; margin-bottom: 15px; }
         .hero p { color: var(--text-dim); max-width: 650px; margin-bottom: 35px; font-size: 1rem; }
 
@@ -85,10 +69,12 @@
         .dl-item { display: block; padding: 15px; color: #fff; text-decoration: none; border-bottom: 1px solid var(--border-color); font-size: 0.9rem; }
         .dl-item:hover { background: rgba(255,255,255,0.05); }
 
-        /* ФУНКЦИИ */
-        section { padding: 60px 8%; max-width: 1200px; margin: 0 auto; }
+        /* СЕКЦИИ */
+        section { padding: 40px 8%; max-width: 1200px; margin: 0 auto; }
         .section-title { font-size: 1.8rem; text-align: center; margin-bottom: 40px; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; }
         .section-title span { color: var(--primary); }
+        
+        /* ФУНКЦИИ КАРТОЧКИ */
         .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; }
         .feature-card {
             background: var(--bg-panel); padding: 30px 20px; border-radius: var(--radius);
@@ -103,16 +89,24 @@
             text-transform: uppercase; transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 6px;
         }
         .btn-view:hover { background: var(--primary); }
-        .btn-group { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 
         /* ПОЛНЫЙ СПИСОК */
         .all-features-list {
             background: var(--bg-panel); border: 1px solid var(--border-color);
             border-radius: var(--radius); padding: 30px;
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 12px;
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px;
         }
-        .feature-item { color: var(--text-dim); font-size: 0.85rem; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+        .feature-item { color: var(--text-dim); font-size: 0.8rem; font-weight: 600; display: flex; align-items: center; gap: 8px; }
         .feature-item::before { content: "•"; color: var(--primary); }
+
+        /* CHANGELOG */
+        .changelog-container { display: flex; flex-direction: column; gap: 20px; }
+        .changelog-card { background: var(--bg-panel); border: 1px solid var(--border-color); border-radius: var(--radius); padding: 25px; }
+        .changelog-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
+        .changelog-version { font-weight: 900; color: var(--primary); font-size: 1.2rem; text-transform: uppercase; }
+        .changelog-list { list-style: none; }
+        .changelog-list li { color: var(--text-dim); font-size: 0.85rem; margin-bottom: 6px; padding-left: 18px; position: relative; line-height: 1.4; }
+        .changelog-list li::before { content: "→"; position: absolute; left: 0; color: var(--primary); font-weight: bold; }
 
         /* МОДАЛКА */
         .modal {
@@ -129,9 +123,8 @@
 
         @media (max-width: 768px) {
             nav { padding: 10px 5%; }
-            .hero h1 { font-size: 2rem; }
-            .all-features-list { grid-template-columns: 1fr 1fr; padding: 15px; }
-            .logo span { display: block; } /* Возвращаем для читаемости */
+            .hero h1 { font-size: 2.2rem; }
+            .all-features-list { grid-template-columns: 1fr; padding: 15px; }
         }
     </style>
 </head>
@@ -146,7 +139,7 @@
 
     <nav>
         <div class="logo">
-            <span>KOSHKA</span> CLIENT <div class="version-tag">1.1</div>
+            <span>KOSHKA</span> CLIENT <div class="version-tag">1.2</div>
         </div>
         <div class="lang-switcher">
             <button class="lang-btn" onclick="setLang('ru')" id="lang-ru">RU</button>
@@ -156,17 +149,17 @@
 
     <header class="hero">
         <h1 id="hero-title">KOSHKA CLIENT</h1>
-        <p id="hero-desc">Улучшенный клиент для DDNet с акцентом на производительность и уникальные фичи. Всё, что нужно для комфортной игры.</p>
+        <p id="hero-desc">Продвинутый клиент для DDNet с уникальными возможностями и высокой производительностью.</p>
         
         <div class="download-box">
             <button class="btn-main" onclick="toggleDl(event)" id="btn-dl-main">
                 <i class="fab fa-windows"></i> СКАЧАТЬ КЛИЕНТ
             </button>
             <div class="dl-dropdown" id="dlMenu">
-                <a href="https://drive.google.com/file/d/1LMvxjeVixyW77Y6FVSs9zv3QyhxWrdMq/view?usp=drive_link" class="dl-item" target="_blank">
+                <a href="https://drive.google.com/file/d/16IKTDRYFy7-LWD8zJWjKpxWQp2wuFzv1/view?usp=drive_link" class="dl-item" target="_blank">
                     <b>Windows x64</b> <span id="rec-text">(Рекомендуется)</span>
                 </a>
-                <a href="https://drive.google.com/file/d/1Ev_KCAfKhfoGjcfZwhgNz5QsFgkm_PtT/view?usp=drive_link" class="dl-item" target="_blank">
+                <a href="https://drive.google.com/file/d/1iwJTBfjhcATQQLYoQFtBAeBpvvCUsVDN/view?usp=drive_link" class="dl-item" target="_blank">
                     <b>Windows x86</b> <span id="oldpc-text">(Для старых ПК)</span>
                 </a>
             </div>
@@ -178,68 +171,33 @@
         <div class="features-grid">
             <div class="feature-card">
                 <h3 id="f1-t">Floating Islet</h3>
-                <p id="f1-d">Красивый интерактивный островок для управления музыкой прямо в игре без сворачивания окон.</p>
+                <p id="f1-d">Интерактивный медиа-остров для управления музыкой прямо в игре без сворачивания окон.</p>
                 <button class="btn-view" onclick="openModal('Floating Islet.jpg')" data-view-text>Скриншот</button>
             </div>
             <div class="feature-card">
                 <h3 id="f2-t">Winter Vibe</h3>
-                <p id="f2-d">Зимняя атмосфера: анимированный снегопад и декоративная гирлянда в главном меню.</p>
+                <p id="f2-d">Зимняя атмосфера: динамический снегопад и праздничное оформление главного меню.</p>
                 <button class="btn-view" onclick="openModal('Winter Vibe.jpg')" data-view-text>Скриншот</button>
             </div>
             <div class="feature-card">
                 <h3 id="f3-t">Custom Background</h3>
-                <p id="f3-d">Заменяй стандартные фоны на любые свои PNG изображения мгновенно.</p>
+                <p id="f3-d">Полная свобода кастомизации фона: устанавливайте любые PNG изображения мгновенно.</p>
                 <button class="btn-view" onclick="openModal('Custom Background.jpg')" data-view-text>Скриншот</button>
-            </div>
-            <div class="feature-card">
-                <h3 id="f4-t">Pet System</h3>
-                <p id="f4-d">Твой личный спутник в игре. Любая картинка может стать твоим питомцем.</p>
-                <button class="btn-view" onclick="openModal('Pet System.jpg')" data-view-text>Скриншот</button>
-            </div>
-            <div class="feature-card">
-                <h3 id="f5-t">Interactive HUD</h3>
-                <p id="f5-d">Управляй элементами интерфейса прямо во время игры с помощью курсора через чат.</p>
-                <button class="btn-view" onclick="openModal('Interactive HUD.jpg')" data-view-text>Скриншот</button>
-            </div>
-            <div class="feature-card">
-                <h3 id="f6-t">Profiles & WarList</h3>
-                <p id="f6-d">Удобное управление списком игроков, создание профилей и система варлиста.</p>
-                <div class="btn-group">
-                    <button class="btn-view" onclick="openModal('Profiles.jpg')">Profiles</button>
-                    <button class="btn-view" onclick="openModal('WarList.jpg')">WarList</button>
-                </div>
             </div>
         </div>
     </section>
 
     <section>
         <h2 class="section-title" id="all-features-title">ПОЛНЫЙ СПИСОК <span>ФУНКЦИЙ</span></h2>
-        <div class="all-features-list">
-            <div class="feature-item">Kill On Freeze</div>
-            <div class="feature-item">Hide Chat Bubble</div>
-            <div class="feature-item">Custom Backgrounds</div>
-            <div class="feature-item">AFK Mode</div>
-            <div class="feature-item">Fast Inputs</div>
-            <div class="feature-item">Autoresponder</div>
-            <div class="feature-item">Auto Team</div>
-            <div class="feature-item">Auto Dummy Connect</div>
-            <div class="feature-item">Floating Islet</div>
-            <div class="feature-item">Rainbow Tee</div>
-            <div class="feature-item">Rainbow Weapons</div>
-            <div class="feature-item">Rainbow Hook</div>
-            <div class="feature-item">Smooth Camera</div>
-            <div class="feature-item">Outlines</div>
-            <div class="feature-item">Show Katana In Freeze</div>
-            <div class="feature-item">Show Stars In Freeze</div>
-            <div class="feature-item">KeyStrokes</div>
-            <div class="feature-item">Trail</div>
-            <div class="feature-item">Pet</div>
-            <div class="feature-item">Show Sight When Spec</div>
-            <div class="feature-item">Vignette</div>
-            <div class="feature-item">Fake CTF Flags</div>
-            <div class="feature-item">Winter Vibe</div>
-            <div class="feature-item">WarList</div>
-            <div class="feature-item">Profiles</div>
+        <div class="all-features-list" id="all-features-container">
+            <!-- Список функций из JS -->
+        </div>
+    </section>
+
+    <section>
+        <h2 class="section-title" id="changelog-title">CHANGELOG <span>ИЗМЕНЕНИЙ</span></h2>
+        <div class="changelog-container" id="changelog-content">
+            <!-- История изменений из JS -->
         </div>
     </section>
 
@@ -247,56 +205,178 @@
         <a href="https://t.me/KoshkaClientF" class="tg-link" target="_blank" id="tg-text">
             <i class="fab fa-telegram"></i> КАНАЛ В TELEGRAM
         </a>
-        <p style="color: var(--text-dim); font-size: 0.75rem; margin-top: 20px;">&copy; 2025 Koshka Client. Version 1.1</p>
+        <p style="color: var(--text-dim); font-size: 0.75rem; margin-top: 20px;">&copy; 2025 Koshka Client. Version 1.2</p>
     </footer>
 
     <script>
         const translations = {
             ru: {
                 "hero-title": "KOSHKA CLIENT",
-                "hero-desc": "Улучшенный клиент для DDNet с акцентом на производительность и уникальные фичи. Всё, что нужно для комфортной игры.",
+                "hero-desc": "Высокопроизводительный клиент для DDNet с акцентом на уникальные визуальные и технические решения.",
                 "btn-dl-main": "<i class='fab fa-windows'></i> СКАЧАТЬ КЛИЕНТ",
                 "rec-text": "(Рекомендуется)",
                 "oldpc-text": "(Для старых ПК)",
                 "main-features-title": "ОСНОВНЫЕ <span>ФУНКЦИИ</span>",
                 "all-features-title": "ПОЛНЫЙ СПИСОК <span>ФУНКЦИЙ</span>",
+                "changelog-title": "ИСТОРИЯ <span>ИЗМЕНЕНИЙ</span>",
                 "f1-t": "Floating Islet",
-                "f1-d": "Красивый интерактивный островок для управления музыкой прямо в игре без сворачивания окон.",
+                "f1-d": "Интерактивный медиа-остров для управления музыкой прямо в игре без сворачивания окон.",
                 "f2-t": "Winter Vibe",
-                "f2-d": "Зимняя атмосфера: анимированный снегопад и декоративная гирлянда в главном меню.",
+                "f2-d": "Зимняя атмосфера: динамический снегопад и праздничное оформление главного меню.",
                 "f3-t": "Custom Background",
-                "f3-d": "Заменяй стандартные фоны на любые свои PNG изображения мгновенно.",
-                "f4-t": "Pet System",
-                "f4-d": "Твой личный спутник в игре. Любая картинка может стать твоим питомцем.",
-                "f5-t": "Interactive HUD",
-                "f5-d": "Управляй элементами интерфейса прямо во время игры с помощью курсора через чат.",
-                "f6-t": "Profiles & WarList",
-                "f6-d": "Удобное управление списком игроков, создание профилей и система варлиста.",
+                "f3-d": "Полная свобода кастомизации фона: устанавливайте любые PNG изображения мгновенно.",
                 "tg-text": "<i class='fab fa-telegram'></i> КАНАЛ В TELEGRAM",
-                "view-btn": "Скриншот"
+                "view-btn": "Скриншот",
+                "features_list": [
+                    "Kill On Freeze", "Hide Chat Bubble", "Custom Backgrounds", "AFK Mode", 
+                    "Fast Inputs", "Autoresponder", "Auto Team", "Auto Dummy Connect", 
+                    "Floating Islet", "Rainbow Tee", "Rainbow Weapons", "Rainbow Hook", 
+                    "Smooth Camera", "Outlines", "Show Katana In Freeze", "Show Stars In Freeze", 
+                    "KeyStrokes", "Trail", "Pet System", "Show Sight When Spec", "Vignette", 
+                    "Fake CTF Flags", "Winter Vibe", "WarList", "Profiles", 
+                    "Show Last Player Left", "Discord RPC", "Show Dummy Position", 
+                    "Do Not Repeat Weapons", "Custom Neon Lasers", "Show Milliseconds In Timer", "Chat Bubble"
+                ],
+                "changelog_data": [
+                    {
+                        ver: "Версия 1.2",
+                        list: [
+                            "Исправлено большое количество багов для повышения стабильности.",
+                            "Добавлена функция 'Show when the last player is left': визуальное уведомление в HUD, когда вы остались последним незамороженным игроком.",
+                            "Интеграция Discord RPC: отображение вашей игровой активности и использования Koshka Client в профиле Discord.",
+                            "Добавлена функция 'Show Dummy Position': отображение точного местоположения вашего дамми в интерфейсе.",
+                            "Добавлена опция 'Do Not Repeat Weapons': предотвращает дублирование оружия при повторе движений дамми.",
+                            "Внедрена система 'Custom Neon Lasers': улучшенное визуальное отображение лазеров для Shotgun и Laser.",
+                            "Обновлен таймер: добавлена функция 'Show Milliseconds In Timer' для точного отображения времени.",
+                            "Добавлена функция 'Chat Bubble': отображение текстовых сообщений от игроков непосредственно над их персонажами.",
+                            "Проведено масштабное обновление и оптимизация системы профилей."
+                        ]
+                    },
+                    {
+                        ver: "Версия 1.1",
+                        list: [
+                            "Исправлены обнаруженные технические ошибки и недоработки.",
+                            "Проведено обновление и улучшение системы автоответчика.",
+                            "Добавлена функция 'AFK Mode': визуальное отображение режима отсутствия (только для пользователя).",
+                            "Добавлена функция 'Show Katana In Freeze': отображение катаны у игроков, находящихся в заморозке.",
+                            "Добавлена функция 'Show Stars In Freeze': визуальный эффект вылетающих звезд у замороженных игроков.",
+                            "Внедрена система 'Winter Vibe': добавлена полноценная зимняя атмосфера в меню игры."
+                        ]
+                    },
+                    {
+                        ver: "Версия 1.0 (Релиз)",
+                        list: [
+                            "Добавлена эксклюзивная вкладка настроек 'Koshka' для управления всеми функциями клиента.",
+                            "Реализованы под-вкладки для удобной навигации: Settings, Visuals, WarList, Profiles, Info.",
+                            "Добавлена функция 'Kill On Freeze': автоматический суицид при заморозке персонажа.",
+                            "Добавлена функция 'Hide Chat Bubble': скрытие пузыря чата над игроком при вводе сообщения.",
+                            "Реализована система 'Custom Backgrounds': возможность мгновенной смены фона меню и игры через PNG файлы.",
+                            "Добавлена функция 'Fast Inputs': оптимизация и ускорение обработки ввода на сервер.",
+                            "Внедрена интеллектуальная система автоответчика.",
+                            "Добавлена функция 'Auto Team': автоматический вход в выбранную команду при подключении к серверу.",
+                            "Добавлена функция 'Auto Dummy Connect': автоматическое подключение дамми при входе.",
+                            "Реализована функция 'Floating Islet': интерактивный HUD-элемент для управления музыкой.",
+                            "Добавлены Rainbow-эффекты для персонажа (Tee), оружия и хука.",
+                            "Добавлена функция 'Smooth Camera': плавное следование камеры за персонажем.",
+                            "Внедрена система 'Outlines': отрисовка контуров вокруг выбранных игровых тайлов.",
+                            "Добавлен HUD-элемент 'KeyStrokes': отображение нажимаемых клавиш в реальном времени.",
+                            "Добавлена функция 'Trail': отрисовка декоративного шлейфа за персонажем.",
+                            "Добавлена система 'Pet': визуальный спутник, следующий за вашим персонажем.",
+                            "Добавлена функция 'Show Sight When Spec': отображение прицела в режиме наблюдения.",
+                            "Добавлен визуальный эффект 'Vignette' (Виньетка).",
+                            "Добавлена функция 'Fake CTF Flags': возможность выбора и отображения любого флага команды.",
+                            "Реализована комплексная система 'WarList': управление списком врагов, союзников и мутов.",
+                            "Внедрена система профилей для быстрого переключения между конфигурациями настроек.",
+                            "Добавлено интерактивное управление элементами HUD с помощью курсора при открытом чате.",
+                            "Реализовано контекстное меню для своего персонажа (настройка Rainbow).",
+                            "Реализовано контекстное меню для других игроков: быстрое сохранение профиля, добавление в WarList или мут."
+                        ]
+                    }
+                ]
             },
             en: {
                 "hero-title": "KOSHKA CLIENT",
-                "hero-desc": "Enhanced DDNet client focused on performance and unique features. Everything you need for a comfortable game.",
+                "hero-desc": "High-performance DDNet client focusing on unique visual and technical solutions.",
                 "btn-dl-main": "<i class='fab fa-windows'></i> DOWNLOAD CLIENT",
                 "rec-text": "(Recommended)",
                 "oldpc-text": "(For old PCs)",
                 "main-features-title": "MAIN <span>FEATURES</span>",
                 "all-features-title": "FULL <span>FEATURE LIST</span>",
+                "changelog-title": "CLIENT <span>CHANGELOG</span>",
                 "f1-t": "Floating Islet",
-                "f1-d": "Beautiful interactive islet for music control right in the game without tab-switching.",
+                "f1-d": "Interactive media islet to control music right in the game without alt-tabbing.",
                 "f2-t": "Winter Vibe",
-                "f2-d": "Winter atmosphere: animated snowfall and decorative garland in the main menu.",
+                "f2-d": "Winter atmosphere: dynamic snowfall and festive main menu design.",
                 "f3-t": "Custom Background",
-                "f3-d": "Instantly replace standard backgrounds with any of your own PNG images.",
-                "f4-t": "Pet System",
-                "f4-d": "Your personal companion in the game. Any image can become your pet.",
-                "f5-t": "Interactive HUD",
-                "f5-d": "Control UI elements directly during gameplay using the cursor via chat.",
-                "f6-t": "Profiles & WarList",
-                "f6-d": "Convenient player list management, profile creation, and WarList system.",
+                "f3-d": "Complete background customization: set any PNG images instantly.",
                 "tg-text": "<i class='fab fa-telegram'></i> TELEGRAM CHANNEL",
-                "view-btn": "Screenshot"
+                "view-btn": "Screenshot",
+                "features_list": [
+                    "Kill On Freeze", "Hide Chat Bubble", "Custom Backgrounds", "AFK Mode", 
+                    "Fast Inputs", "Autoresponder", "Auto Team", "Auto Dummy Connect", 
+                    "Floating Islet", "Rainbow Tee", "Rainbow Weapons", "Rainbow Hook", 
+                    "Smooth Camera", "Outlines", "Show Katana In Freeze", "Show Stars In Freeze", 
+                    "KeyStrokes", "Trail", "Pet System", "Show Sight When Spec", "Vignette", 
+                    "Fake CTF Flags", "Winter Vibe", "WarList", "Profiles", 
+                    "Show Last Player Left", "Discord RPC", "Show Dummy Position", 
+                    "Do Not Repeat Weapons", "Custom Neon Lasers", "Show Milliseconds In Timer", "Chat Bubble"
+                ],
+                "changelog_data": [
+                    {
+                        ver: "Version 1.2",
+                        list: [
+                            "Fixed a large number of bugs for better stability.",
+                            "Added 'Show when the last player is left': HUD notification when you are the last unfrozen player.",
+                            "Discord RPC Integration: displays your game activity and client usage in Discord.",
+                            "Added 'Show Dummy Position': shows the exact location of your dummy in the UI.",
+                            "Added 'Do Not Repeat Weapons' option: prevents weapon duplication during dummy input playback.",
+                            "Implemented 'Custom Neon Lasers': enhanced visual laser effects for Shotgun and Laser.",
+                            "Updated Timer: added 'Show Milliseconds In Timer' for precise time tracking.",
+                            "Added 'Chat Bubble': displays player messages directly above their characters.",
+                            "Major update and optimization of the Profile system."
+                        ]
+                    },
+                    {
+                        ver: "Version 1.1",
+                        list: [
+                            "Fixed technical bugs and minor issues.",
+                            "Updated and improved the Autoresponder system.",
+                            "Added 'AFK Mode': visual AFK status (client-side only).",
+                            "Added 'Show Katana In Freeze': shows a katana on frozen players.",
+                            "Added 'Show Stars In Freeze': star particles effect for frozen players.",
+                            "Implemented 'Winter Vibe': added a full winter atmosphere to the main menu."
+                        ]
+                    },
+                    {
+                        ver: "Version 1.0 (Release)",
+                        list: [
+                            "Added exclusive 'Koshka' settings tab for client feature management.",
+                            "Implemented sub-tabs for easy navigation: Settings, Visuals, WarList, Profiles, Info.",
+                            "Added 'Kill On Freeze': automatic suicide when the character is frozen.",
+                            "Added 'Hide Chat Bubble': hides the chat bubble above the player while typing.",
+                            "Implemented 'Custom Backgrounds': instant menu and game background changes via PNG files.",
+                            "Added 'Fast Inputs': optimized and faster input processing for the server.",
+                            "Implemented an intelligent Autoresponder system.",
+                            "Added 'Auto Team': automatically join a selected team when connecting.",
+                            "Added 'Auto Dummy Connect': automatically connects the dummy upon joining.",
+                            "Implemented 'Floating Islet': an interactive HUD element for music control.",
+                            "Added Rainbow effects for Tee, Weapons, and Hook.",
+                            "Added 'Smooth Camera': smooth camera following the character.",
+                            "Implemented 'Outlines' system: draws outlines around selected map tiles.",
+                            "Added 'KeyStrokes' HUD: real-time display of pressed keys.",
+                            "Added 'Trail' function: draws a decorative trail behind the character.",
+                            "Added 'Pet' system: a visual companion following your character.",
+                            "Added 'Show Sight When Spec': displays the crosshair in spectator mode.",
+                            "Added 'Vignette' visual effect.",
+                            "Added 'Fake CTF Flags': ability to choose and display any team flag.",
+                            "Implemented comprehensive 'WarList' system: manage enemies, team, and mutes.",
+                            "Implemented Profile system for quick switching between configurations.",
+                            "Added interactive HUD control using the cursor when chat is open.",
+                            "Implemented context menu for own Tee (Rainbow settings).",
+                            "Implemented context menu for other players: save profile, add to WarList, or mute."
+                        ]
+                    }
+                ]
             }
         };
 
@@ -304,10 +384,33 @@
             localStorage.setItem('lang', lang);
             document.getElementById('lang-ru').classList.toggle('active', lang === 'ru');
             document.getElementById('lang-en').classList.toggle('active', lang === 'en');
+            
+            // Основной текст
             for (let key in translations[lang]) {
                 const el = document.getElementById(key);
-                if (el) el.innerHTML = translations[lang][key];
+                if (el && typeof translations[lang][key] === 'string') {
+                    el.innerHTML = translations[lang][key];
+                }
             }
+
+            // Рендер функций
+            const featuresContainer = document.getElementById('all-features-container');
+            featuresContainer.innerHTML = translations[lang].features_list
+                .map(item => `<div class="feature-item">${item}</div>`).join('');
+
+            // Рендер Changelog
+            const changelogContainer = document.getElementById('changelog-content');
+            changelogContainer.innerHTML = translations[lang].changelog_data.map(version => `
+                <div class="changelog-card">
+                    <div class="changelog-header">
+                        <div class="changelog-version">${version.ver}</div>
+                    </div>
+                    <ul class="changelog-list">
+                        ${version.list.map(li => `<li>${li}</li>`).join('')}
+                    </ul>
+                </div>
+            `).join('');
+
             document.querySelectorAll('[data-view-text]').forEach(btn => {
                 btn.innerHTML = `<i class='fas fa-image'></i> ${translations[lang]['view-btn']}`;
             });
@@ -340,6 +443,7 @@
             document.body.style.overflow = 'auto';
         }
 
+        // Снег
         const canvas = document.getElementById('snow-canvas');
         const ctx = canvas.getContext('2d');
         let w, h, flakes = [];
@@ -347,16 +451,16 @@
         function init() {
             w = window.innerWidth; h = window.innerHeight;
             canvas.width = w; canvas.height = h;
-            const count = w < 768 ? 25 : 70;
+            const count = w < 768 ? 20 : 60;
             flakes = [];
             for(let i=0; i<count; i++) {
-                flakes.push({ x: Math.random() * w, y: Math.random() * h, s: Math.random() * 2 + 1, v: Math.random() * 0.4 + 0.2 });
+                flakes.push({ x: Math.random() * w, y: Math.random() * h, s: Math.random() * 2 + 1, v: Math.random() * 0.5 + 0.2 });
             }
         }
 
         function draw() {
             ctx.clearRect(0, 0, w, h);
-            ctx.fillStyle = "rgba(255, 255, 255, 0.4)";
+            ctx.fillStyle = "rgba(255, 255, 255, 0.3)";
             ctx.beginPath();
             for(let f of flakes) {
                 ctx.moveTo(f.x, f.y);
