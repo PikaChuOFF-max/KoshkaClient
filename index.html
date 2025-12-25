@@ -53,7 +53,7 @@
         .hero p { color: var(--text-dim); max-width: 650px; margin-bottom: 35px; font-size: 1rem; }
 
         /* СКАЧАТЬ */
-        .download-box { position: relative; width: 100%; max-width: 340px; }
+        .download-box { position: relative; width: 100%; max-width: 400px; }
         .btn-main {
             width: 100%; padding: 18px; background: var(--primary); color: white; border: none; 
             border-radius: var(--radius); font-weight: 800; cursor: pointer; display: flex; 
@@ -61,13 +61,31 @@
             text-transform: uppercase;
         }
         .btn-main:active { transform: translateY(2px); box-shadow: 0 2px 0px #005fa3; }
+        
         .dl-dropdown {
-            position: absolute; top: calc(100% + 10px); left: 0; width: 100%; background: var(--bg-panel); 
-            border: 1px solid var(--border-color); border-radius: var(--radius); display: none; z-index: 100;
+            position: absolute; top: calc(100% + 10px); left: 50%; transform: translateX(-50%); 
+            width: 100%; min-width: 320px; background: var(--bg-panel); 
+            border: 1px solid var(--border-color); border-radius: var(--radius); 
+            display: none; z-index: 100; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            overflow: hidden;
         }
         .dl-dropdown.active { display: block; }
-        .dl-item { display: block; padding: 15px; color: #fff; text-decoration: none; border-bottom: 1px solid var(--border-color); font-size: 0.9rem; }
-        .dl-item:hover { background: rgba(255,255,255,0.05); }
+        
+        .dl-section-title {
+            background: rgba(255,255,255,0.03); padding: 10px 15px; font-size: 0.7rem;
+            text-transform: uppercase; color: var(--primary); font-weight: 800;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .dl-item { 
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 12px 15px; color: #fff; text-decoration: none; 
+            border-bottom: 1px solid var(--border-color); font-size: 0.85rem; 
+            transition: 0.2s;
+        }
+        .dl-item:hover { background: rgba(255,255,255,0.05); color: var(--primary); }
+        .dl-item span { font-size: 0.7rem; opacity: 0.6; font-weight: 400; }
+        .dl-item b { font-weight: 700; }
 
         /* СЕКЦИИ */
         section { padding: 40px 8%; max-width: 1200px; margin: 0 auto; }
@@ -153,14 +171,31 @@
         
         <div class="download-box">
             <button class="btn-main" onclick="toggleDl(event)" id="btn-dl-main">
-                <i class="fab fa-windows"></i> СКАЧАТЬ КЛИЕНТ
+                <i class="fas fa-download"></i> СКАЧАТЬ КЛИЕНТ
             </button>
             <div class="dl-dropdown" id="dlMenu">
-                <a href="https://drive.google.com/file/d/16IKTDRYFy7-LWD8zJWjKpxWQp2wuFzv1/view?usp=drive_link" class="dl-item" target="_blank">
+                <!-- Группа 1: Полный клиент -->
+                <div class="dl-section-title" id="title-full-client">Полный клиент (Архив)</div>
+                <a href="https://drive.google.com/file/d/1uXuWtq45vFntfZhhlmnwI7HpUWBHCS-L/view?usp=drive_link" class="dl-item" target="_blank">
                     <b>Windows x64</b> <span id="rec-text">(Рекомендуется)</span>
                 </a>
                 <a href="https://drive.google.com/file/d/1iwJTBfjhcATQQLYoQFtBAeBpvvCUsVDN/view?usp=drive_link" class="dl-item" target="_blank">
                     <b>Windows x86</b> <span id="oldpc-text">(Для старых ПК)</span>
+                </a>
+                <a href="https://drive.google.com/file/d/1Vy9SmbgwoH-0fvh4bpVyazZbJtt066IF/view?usp=drive_link" class="dl-item" target="_blank">
+                    <b>Linux</b> <span>(Full Archive)</span>
+                </a>
+
+                <!-- Группа 2: Только EXE -->
+                <div class="dl-section-title" id="title-only-exe">Только исполняемый файл</div>
+                <a href="https://drive.google.com/file/d/1W8IKxrt8jrAcUwcjlLAndRhz2cIiHUpO/view?usp=drive_link" class="dl-item" target="_blank">
+                    <b>Windows x64</b> <span>(.exe)</span>
+                </a>
+                <a href="https://drive.google.com/file/d/14fMRWKpeNwyM7Vw3CPbiLoa_Z54Cs6NF/view?usp=drive_link" class="dl-item" target="_blank">
+                    <b>Windows x86</b> <span>(.exe)</span>
+                </a>
+                <a href="https://drive.google.com/file/d/1Fr884LlSJ-HrzGF59nLFk4sW9LVfhOUg/view?usp=drive_link" class="dl-item" target="_blank">
+                    <b>Linux</b> <span>(Binary)</span>
                 </a>
             </div>
         </div>
@@ -213,9 +248,11 @@
             ru: {
                 "hero-title": "KOSHKA CLIENT",
                 "hero-desc": "Высокопроизводительный клиент для DDNet с акцентом на уникальные визуальные и технические решения.",
-                "btn-dl-main": "<i class='fab fa-windows'></i> СКАЧАТЬ КЛИЕНТ",
+                "btn-dl-main": "<i class='fas fa-download'></i> СКАЧАТЬ КЛИЕНТ",
                 "rec-text": "(Рекомендуется)",
                 "oldpc-text": "(Для старых ПК)",
+                "title-full-client": "Полный клиент (Архив)",
+                "title-only-exe": "Только исполняемый файл",
                 "main-features-title": "ОСНОВНЫЕ <span>ФУНКЦИИ</span>",
                 "all-features-title": "ПОЛНЫЙ СПИСОК <span>ФУНКЦИЙ</span>",
                 "changelog-title": "ИСТОРИЯ <span>ИЗМЕНЕНИЙ</span>",
@@ -297,9 +334,11 @@
             en: {
                 "hero-title": "KOSHKA CLIENT",
                 "hero-desc": "High-performance DDNet client focusing on unique visual and technical solutions.",
-                "btn-dl-main": "<i class='fab fa-windows'></i> DOWNLOAD CLIENT",
+                "btn-dl-main": "<i class='fas fa-download'></i> DOWNLOAD CLIENT",
                 "rec-text": "(Recommended)",
                 "oldpc-text": "(For old PCs)",
+                "title-full-client": "Full Client (Archive)",
+                "title-only-exe": "Executable Only",
                 "main-features-title": "MAIN <span>FEATURES</span>",
                 "all-features-title": "FULL <span>FEATURE LIST</span>",
                 "changelog-title": "CLIENT <span>CHANGELOG</span>",
