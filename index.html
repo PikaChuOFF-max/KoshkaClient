@@ -3,487 +3,251 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Koshka Client v1.3 | New Year Edition</title>
+    <title>Koshka Client | Next Gen DDNet</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;800&display=swap" rel="stylesheet">
 
     <style>
         :root {
-            --bg-dark: #0a0c10;
-            --bg-panel: #12161d;
+            --bg: #050608;
+            --panel: rgba(255, 255, 255, 0.03);
             --primary: #00d2ff; 
-            --accent: #ffd700; 
-            --text-main: #ffffff;
-            --text-dim: #a0a8b5;
-            --border-color: rgba(0, 210, 255, 0.2);
-            --radius: 8px;
+            --text: #ffffff;
+            --text-dim: #94a3b8;
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --accent-glow: rgba(0, 210, 255, 0.3);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; scroll-behavior: smooth; }
-        body { background-color: var(--bg-dark); color: var(--text-main); line-height: 1.5; overflow-x: hidden; }
-        #snow-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; opacity: 0.4; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; scroll-behavior: smooth; }
+        body { background-color: var(--bg); color: var(--text); overflow-x: hidden; line-height: 1.6; }
 
-        /* Гирлянда */
-        .lights {
-            position: fixed; top: 0; left: 0; width: 100%; height: 4px;
-            background: linear-gradient(90deg, #ff0000, #00ff00, #0000ff, #ffff00, #ff00ff);
-            background-size: 300% 100%; animation: moveLights 3s linear infinite; z-index: 1001;
+        /* Background Effects */
+        #snow-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; opacity: 0.3; }
+        .bg-glow { 
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 600px; height: 600px; background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+            z-index: -2; filter: blur(80px); opacity: 0.5;
         }
-        @keyframes moveLights { 0% { background-position: 0% 0%; } 100% { background-position: 300% 0%; } }
 
-        /* НАВИГАЦИЯ */
+        /* Навигация */
         nav {
             display: flex; justify-content: space-between; align-items: center;
-            padding: 15px 8%; position: fixed; width: 100%; top: 0; z-index: 1000;
-            background: rgba(10, 12, 16, 0.95); border-bottom: 1px solid var(--border-color); backdrop-filter: blur(10px);
+            padding: 20px 10%; position: fixed; width: 100%; top: 0; z-index: 1000;
+            background: rgba(5, 6, 8, 0.8); backdrop-filter: blur(20px); border-bottom: 1px solid var(--glass-border);
         }
-        
-        .logo { font-size: 1.3rem; font-weight: 900; display: flex; align-items: center; gap: 8px; }
-        .logo span { color: var(--primary); text-shadow: 0 0 10px rgba(0,210,255,0.5); }
-        
-        .version-tag { 
-            background: linear-gradient(45deg, var(--primary), #005fa3); color: #fff; padding: 3px 12px; border-radius: 20px; 
-            font-size: 0.75rem; font-weight: 800; margin-left: 10px; box-shadow: 0 0 15px rgba(0,210,255,0.3);
-        }
+        .logo { font-size: 1.1rem; font-weight: 800; letter-spacing: 2px; display: flex; align-items: center; gap: 10px; }
+        .logo span { color: var(--primary); }
 
+        .lang-switcher { display: flex; gap: 5px; background: rgba(255,255,255,0.05); padding: 4px; border-radius: 8px; }
         .lang-btn { 
-            background: none; border: 1px solid var(--border-color); color: var(--text-dim);
-            padding: 5px 12px; border-radius: 5px; cursor: pointer; font-size: 0.75rem; font-weight: 700; transition: 0.3s;
+            background: none; border: none; color: var(--text-dim); padding: 6px 12px; 
+            border-radius: 6px; cursor: pointer; font-size: 0.7rem; font-weight: 600; transition: 0.3s;
         }
-        .lang-btn.active { background: var(--primary); color: #000; border-color: var(--primary); }
+        .lang-btn.active { background: var(--primary); color: #000; }
 
-        /* HERO */
-        .hero { min-height: 65vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 140px 20px 60px; }
-        .hero h1 { 
-            font-size: clamp(2.5rem, 8vw, 4.5rem); font-weight: 900; text-transform: uppercase; margin-bottom: 15px;
-            background: linear-gradient(to bottom, #fff, var(--primary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        /* Hero Section */
+        .hero { height: 90vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 0 20px; }
+        .version-badge { 
+            background: rgba(0, 210, 255, 0.1); border: 1px solid var(--primary); color: var(--primary);
+            padding: 5px 15px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; margin-bottom: 20px;
         }
-        .hero p { color: var(--text-dim); max-width: 700px; margin-bottom: 40px; font-size: 1.1rem; }
+        .hero h1 { font-size: clamp(2.5rem, 10vw, 5rem); font-weight: 800; letter-spacing: -2px; margin-bottom: 20px; line-height: 1; }
+        .hero p { color: var(--text-dim); max-width: 600px; font-size: 1.1rem; margin-bottom: 40px; font-weight: 300; }
 
-        /* СКАЧАТЬ */
-        .download-box { position: relative; width: 100%; max-width: 450px; }
+        /* Download Button */
+        .download-container { position: relative; width: 100%; max-width: 320px; }
         .btn-main {
-            width: 100%; padding: 20px; background: var(--primary); color: #000; border: none; 
-            border-radius: var(--radius); font-weight: 900; cursor: pointer; display: flex; 
-            align-items: center; justify-content: center; gap: 10px; box-shadow: 0 0 20px rgba(0,210,255,0.4);
-            text-transform: uppercase; letter-spacing: 1px; transition: 0.3s;
+            width: 100%; padding: 18px 30px; background: var(--text); color: #000; 
+            border: none; border-radius: 12px; font-weight: 700; cursor: pointer;
+            display: flex; align-items: center; justify-content: center; gap: 12px;
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-        .btn-main:hover { transform: translateY(-3px); box-shadow: 0 0 30px rgba(0,210,255,0.6); }
-        
-        .dl-dropdown {
-            position: absolute; top: calc(100% + 10px); left: 0; width: 100%; 
-            background: var(--bg-panel); border: 1px solid var(--border-color); border-radius: var(--radius); 
-            display: none; z-index: 100; box-shadow: 0 10px 40px rgba(0,0,0,0.7); overflow: hidden;
-        }
-        .dl-dropdown.active { display: block; }
-        
-        .dl-section-title {
-            background: rgba(0, 210, 255, 0.1); padding: 10px 20px; font-size: 0.75rem;
-            text-transform: uppercase; color: var(--primary); font-weight: 900;
-            border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between;
-        }
+        .btn-main:hover { transform: scale(1.02); box-shadow: 0 20px 40px rgba(0,0,0,0.4); background: var(--primary); }
 
-        .dl-item { 
+        .dl-menu {
+            position: absolute; top: 110%; left: 0; width: 100%; background: #111418;
+            border: 1px solid var(--glass-border); border-radius: 12px; overflow: hidden;
+            display: none; z-index: 100; box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+        .dl-menu.active { display: block; animation: slideUp 0.3s ease; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .dl-item {
             display: flex; justify-content: space-between; align-items: center;
-            padding: 14px 20px; color: #fff; text-decoration: none; 
-            border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 0.9rem; transition: 0.2s;
+            padding: 15px 20px; color: var(--text); text-decoration: none; font-size: 0.9rem;
+            border-bottom: 1px solid var(--glass-border); transition: 0.2s;
         }
-        .dl-item:hover { background: rgba(0, 210, 255, 0.08); color: var(--primary); }
-        .dl-item span { font-size: 0.7rem; opacity: 0.6; }
-        .v-badge { font-size: 0.6rem; background: #333; padding: 2px 5px; border-radius: 3px; margin-left: 5px; vertical-align: middle; }
+        .dl-item:hover { background: rgba(255,255,255,0.05); color: var(--primary); }
+        .dl-item span { font-size: 0.7rem; color: var(--text-dim); }
 
-        /* СЕКЦИИ */
-        section { padding: 50px 8%; max-width: 1200px; margin: 0 auto; }
-        .section-title { font-size: 2rem; text-align: center; margin-bottom: 45px; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; }
-        .section-title span { color: var(--primary); }
+        /* Trailer Section */
+        .section-wrap { padding: 100px 10%; max-width: 1200px; margin: 0 auto; }
+        .section-title { font-size: 1.5rem; font-weight: 800; margin-bottom: 40px; text-align: center; letter-spacing: 2px; }
         
-        /* КАРТОЧКИ ФУНКЦИЙ */
-        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
-        .feature-card {
-            background: var(--bg-panel); padding: 30px; border-radius: var(--radius);
-            border: 1px solid var(--border-color); transition: 0.3s;
+        .trailer-placeholder {
+            width: 100%; aspect-ratio: 16/9; background: var(--panel);
+            border: 1px solid var(--glass-border); border-radius: 24px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            position: relative; overflow: hidden;
         }
-        .feature-card:hover { border-color: var(--primary); transform: translateY(-5px); }
-        .feature-card h3 { margin-bottom: 12px; font-size: 1.3rem; color: var(--primary); }
-        .feature-card p { color: var(--text-dim); font-size: 0.9rem; margin-bottom: 25px; min-height: 60px; }
-
-        .btn-view {
-            background: rgba(255,255,255,0.03); color: #fff; border: 1px solid var(--border-color);
-            padding: 12px; border-radius: 6px; cursor: pointer; font-weight: 800; font-size: 0.75rem;
-            text-transform: uppercase; width: 100%; transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px;
-        }
-        .btn-view:hover { background: var(--primary); color: #000; }
-
-        /* СПИСОК ФУНКЦИЙ */
-        .all-features-list {
-            background: var(--bg-panel); border: 1px solid var(--border-color);
-            border-radius: var(--radius); padding: 35px;
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 12px;
-        }
-        .feature-item { color: #d1d9e6; font-size: 0.85rem; font-weight: 600; display: flex; align-items: center; gap: 10px; }
-        .feature-item::before { content: "❄"; color: var(--primary); font-size: 0.7rem; }
-
-        /* CHANGELOG */
-        .changelog-card { background: var(--bg-panel); border: 1px solid var(--border-color); border-radius: var(--radius); padding: 30px; margin-bottom: 25px; }
-        .changelog-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid var(--border-color); padding-bottom: 15px; }
-        .changelog-version { font-weight: 900; color: var(--accent); font-size: 1.4rem; text-transform: uppercase; }
-        .changelog-list li { color: var(--text-dim); font-size: 0.9rem; margin-bottom: 10px; padding-left: 20px; position: relative; list-style: none; }
-        .changelog-list li::before { content: "→"; position: absolute; left: 0; color: var(--primary); font-weight: bold; }
-
-        /* МОДАЛКА */
-        .modal {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.95); display: none; align-items: center; justify-content: center;
-            z-index: 2000; padding: 20px;
-        }
-        .modal.active { display: flex; }
-        .modal-content { max-width: 90%; max-height: 85vh; border: 2px solid var(--primary); border-radius: 4px; }
-        .close-modal { position: absolute; top: 30px; right: 30px; color: white; font-size: 2.5rem; cursor: pointer; }
-
-        /* ЭФФЕКТ САЛЮТА */
-        .firework { position: absolute; width: 4px; height: 4px; border-radius: 50%; pointer-events: none; z-index: 9999; animation: explode 1s ease-out forwards; }
-        @keyframes explode {
-            0% { transform: translate(0,0); opacity: 1; }
-            100% { transform: translate(var(--x), var(--y)); opacity: 0; }
+        .trailer-placeholder i { font-size: 4rem; color: var(--primary); opacity: 0.5; margin-bottom: 15px; }
+        .coming-soon-tag {
+            background: var(--primary); color: #000; padding: 5px 15px; border-radius: 5px;
+            font-size: 0.7rem; font-weight: 900; text-transform: uppercase;
         }
 
-        footer { padding: 60px 20px; text-align: center; border-top: 1px solid var(--border-color); background: #07090c; }
-        .tg-link { display: inline-flex; align-items: center; gap: 12px; background: #24A1DE; color: white; padding: 15px 35px; border-radius: 50px; text-decoration: none; font-weight: 900; box-shadow: 0 5px 20px rgba(36, 161, 222, 0.3); transition: 0.3s; }
-        .tg-link:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(36, 161, 222, 0.5); }
+        /* Features Mini */
+        .features-lite { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; margin-top: 50px; }
+        .f-card { padding: 30px; background: var(--panel); border-radius: 20px; border: 1px solid var(--glass-border); }
+        .f-card h3 { font-size: 1rem; margin-bottom: 10px; color: var(--primary); }
+        .f-card p { font-size: 0.85rem; color: var(--text-dim); }
+
+        footer { padding: 80px 20px; text-align: center; opacity: 0.6; font-size: 0.8rem; }
+
+        /* Firework Effect */
+        .firework { position: absolute; width: 3px; height: 3px; border-radius: 50%; pointer-events: none; animation: explode 0.8s ease-out forwards; }
+        @keyframes explode { 0% { transform: translate(0,0); opacity: 1; } 100% { transform: translate(var(--x), var(--y)); opacity: 0; } }
 
         @media (max-width: 768px) {
-            nav { padding: 10px 5%; }
-            .hero h1 { font-size: 2.5rem; }
-            .all-features-list { grid-template-columns: 1fr; }
+            .hero h1 { font-size: 3rem; }
+            nav { padding: 15px 5%; }
         }
     </style>
 </head>
 <body>
 
-    <div class="lights"></div>
+    <div class="bg-glow"></div>
     <canvas id="snow-canvas"></canvas>
 
-    <div class="modal" id="imgModal" onclick="closeModal()">
-        <span class="close-modal">&times;</span>
-        <img src="" class="modal-content" id="modalImg">
-    </div>
-
     <nav>
-        <div class="logo">
-            <i class="fas fa-cat" style="color:var(--primary)"></i> <span>KOSHKA</span> CLIENT <div class="version-tag">1.3</div>
-        </div>
+        <div class="logo">KOSHKA<span>CLIENT</span></div>
         <div class="lang-switcher">
-            <button class="lang-btn" onclick="setLang('ru')" id="lang-ru">RU</button>
+            <button class="lang-btn active" onclick="setLang('ru')" id="lang-ru">RU</button>
             <button class="lang-btn" onclick="setLang('en')" id="lang-en">EN</button>
         </div>
     </nav>
 
     <header class="hero">
-        <h1 id="hero-title">KOSHKA CLIENT</h1>
-        <p id="hero-desc">Обновление 1.3: Click GUI, мини-игры и улучшенная производительность DDNet.</p>
+        <div class="version-badge">v1.4 Available Now</div>
+        <h1 id="hero-title">Elevate Your Game.</h1>
+        <p id="hero-desc">Минималистичный, мощный и быстрый клиент для DDNet. Создан для тех, кто ценит эстетику и производительность.</p>
         
-        <div class="download-box">
-            <button class="btn-main" onclick="toggleDl(event)" id="btn-dl-main">
-                <i class="fas fa-download"></i> СКАЧАТЬ КЛИЕНТ 1.3
+        <div class="download-container">
+            <button class="btn-main" onclick="toggleDl(event)">
+                <i class="fas fa-arrow-down"></i> <span id="btn-dl-text">СКАЧАТЬ КЛИЕНТ</span>
             </button>
-            <div class="dl-dropdown" id="dlMenu">
-                <div class="dl-section-title"><span id="title-full-client">Архив (Full)</span> <b>v1.3</b></div>
-                <a href="https://drive.google.com/file/d/1xXznFgZ1azXSRI9RU7QDo-L9HANGbdSD/view?usp=drive_link" class="dl-item" target="_blank">
-                    <b>Windows x64</b> <span>(Recommended)</span>
+            <div class="dl-menu" id="dlMenu">
+                <div style="padding: 10px 20px; font-size: 0.65rem; color: var(--primary); font-weight: 800;">WINDOWS</div>
+                <a href="https://drive.google.com/file/d/10CFKUM6rTX_3i5Hfs4i1v-2cDo8dE1Kx/view?usp=drive_link" class="dl-item">
+                    Full Archive <span>v1.4</span>
                 </a>
-                <a href="https://drive.google.com/file/d/1iwJTBfjhcATQQLYoQFtBAeBpvvCUsVDN/view?usp=drive_link" class="dl-item" target="_blank">
-                    <b>Windows x86</b> <span class="v-badge">v1.2</span>
+                <a href="https://drive.google.com/file/d/1vbVzJa_JL_uu_6Lj9w6m2tIlwsD75r48/view?usp=drive_link" class="dl-item">
+                    Only EXE <span>v1.4</span>
                 </a>
-                <a href="https://drive.google.com/file/d/1ZpLNrWUR4mp7VFGbZp_vFyyOrN6ZljOj/view?usp=drive_link" class="dl-item" target="_blank">
-                    <b>Linux</b> <span>(Archive)</span>
+                <a href="https://drive.google.com/file/d/1iwJTBfjhcATQQLYoQFtBAeBpvvCUsVDN/view?usp=drive_link" class="dl-item">
+                    Windows x86 <span>v1.2</span>
                 </a>
-
-                <div class="dl-section-title"><span id="title-only-exe">Только EXE / Binary</span> <b>v1.3</b></div>
-                <a href="https://drive.google.com/file/d/1Htl5X9FdGNqoyWcOqNg-W_HfvokvU9Hw/view?usp=drive_link" class="dl-item" target="_blank">
-                    <b>Windows x64</b> <span>(.exe)</span>
-                </a>
-                <a href="https://drive.google.com/file/d/14fMRWKpeNwyM7Vw3CPbiLoa_Z54Cs6NF/view?usp=drive_link" class="dl-item" target="_blank">
-                    <b>Windows x86</b> <span class="v-badge">v1.2</span>
-                </a>
-                <a href="https://drive.google.com/file/d/1i44Jc10deY6ReGTp0Lun2D9rgSp86tfC/view?usp=drive_link" class="dl-item" target="_blank">
-                    <b>Linux</b> <span>(Binary)</span>
+                <div style="padding: 10px 20px; font-size: 0.65rem; color: var(--primary); font-weight: 800; border-top: 1px solid var(--glass-border);">LINUX</div>
+                <a href="https://drive.google.com/file/d/1ZpLNrWUR4mp7VFGbZp_vFyyOrN6ZljOj/view?usp=drive_link" class="dl-item">
+                    Linux Binary <span>v1.3</span>
                 </a>
             </div>
         </div>
     </header>
 
-    <section>
-        <h2 class="section-title" id="main-features-title">НОВИНКИ <span>ВЕРСИИ 1.3</span></h2>
-        <div class="features-grid">
-            <div class="feature-card">
+    <section class="section-wrap">
+        <h2 class="section-title" id="trailer-title">OFFICIAL TRAILER</h2>
+        <div class="trailer-placeholder">
+            <i class="fas fa-play-circle"></i>
+            <div class="coming-soon-tag" id="soon-tag">Coming Soon</div>
+            <p style="margin-top: 20px; color: var(--text-dim); font-size: 0.9rem;" id="trailer-desc">Мы готовим видеообзор новой версии 1.4</p>
+        </div>
+    </section>
+
+    <section class="section-wrap" style="padding-top: 0;">
+        <div class="features-lite">
+            <div class="f-card">
                 <h3 id="f1-t">Click GUI</h3>
-                <p id="f1-d">Совершенно новый интерфейс управления всеми функциями клиента. Удобно, быстро и стильно.</p>
-                <button class="btn-view" onclick="openModal('clickgui.jpg')" data-view-text>Скриншот</button>
+                <p id="f1-d">Интуитивное управление всеми функциями клиента в один клик.</p>
             </div>
-            <div class="feature-card">
-                <h3 id="f2-t">Мини-игры</h3>
-                <p id="f2-d">Развлекайтесь прямо в меню настроек! Добавлены встроенные игры, чтобы скоротать время в ожидании.</p>
-                <button class="btn-view" onclick="openModal('games.jpg')" data-view-text>Скриншот</button>
+            <div class="f-card">
+                <h3 id="f2-t">Performance</h3>
+                <p id="f2-d">Максимальный FPS и минимальная задержка ввода (Fast Input).</p>
             </div>
-            <div class="feature-card">
-                <h3 id="f3-t">Triple Grenade Hint</h3>
-                <p id="f3-d">Визуальный помощник: фантомный тии показывает точку выстрела для идеального тройного буста.</p>
-                <button class="btn-view" onclick="openModal('triplegrenadehint.jpg')" data-view-text>Скриншот</button>
+            <div class="f-card">
+                <h3 id="f3-t">Visuals</h3>
+                <p id="f3-d">От кастомных фонов до неоновых лазеров и продвинутых анимаций.</p>
             </div>
         </div>
     </section>
 
-    <section>
-        <h2 class="section-title" id="all-features-title">ПОЛНЫЙ СПИСОК <span>ФУНКЦИЙ</span></h2>
-        <div class="all-features-list" id="all-features-container"></div>
-    </section>
-
-    <section>
-        <h2 class="section-title" id="changelog-title">ИСТОРИЯ <span>ОБНОВЛЕНИЙ</span></h2>
-        <div id="changelog-content"></div>
-    </section>
-
     <footer>
-        <a href="https://t.me/KoshkaClientF" class="tg-link" target="_blank">
-            <i class="fab fa-telegram"></i> <span id="tg-text">КАНАЛ В TELEGRAM</span>
-        </a>
-        <p style="color: var(--text-dim); font-size: 0.8rem; margin-top: 25px;">&copy; 2025-2026 Koshka Client. С Новым Годом!</p>
+        <div style="margin-bottom: 20px;">
+            <a href="https://t.me/KoshkaClientF" target="_blank" style="color: var(--primary); text-decoration: none; font-weight: 600;">Telegram Channel</a>
+        </div>
+        <p>&copy; 2025-2026 Koshka Client. Build 1.4.0</p>
     </footer>
 
     <script>
         const translations = {
             ru: {
-                "hero-title": "KOSHKA CLIENT 1.3",
-                "hero-desc": "Продвинутый клиент для DDNet с уникальным Click GUI, мини-играми и мощным функционалом для игры.",
-                "btn-dl-main": "<i class='fas fa-download'></i> СКАЧАТЬ ОБНОВЛЕНИЕ 1.3",
-                "title-full-client": "Архив (Полный)",
-                "title-only-exe": "Только файл запуска",
-                "main-features-title": "НОВИНКИ <span>ВЕРСИИ 1.3</span>",
-                "all-features-title": "ПОЛНЫЙ СПИСОК <span>ФУНКЦИЙ</span>",
-                "changelog-title": "ИСТОРИЯ <span>ОБНОВЛЕНИЙ</span>",
-                "tg-text": "КАНАЛ В TELEGRAM",
-                "view-btn": "Скриншот",
-                "f1-t": "Click GUI",
-                "f1-d": "Совершенно новый интерфейс управления всеми функциями клиента. Удобно, быстро и стильно.",
-                "f2-t": "Мини-игры",
-                "f2-d": "Развлекайтесь прямо в меню настроек! Добавлены встроенные игры, чтобы скоротать время в ожидании.",
-                "f3-t": "Triple Grenade Hint",
-                "f3-d": "Визуальный помощник: фантомный тии показывает точку выстрела для идеального тройного буста.",
-                "features_list": [
-                    "Click GUI (v1.3)", "Mini Games (v1.3)", "Triple Grenade Hint (v1.3)", "Replace with Latin (v1.3)", 
-                    "Beautiful Animations (v1.3)", "Adjustable Hammer Rotation (v1.3)", "Fireworks Easter Egg (v1.3)",
-                    "JPG Background Support (v1.3)", "Floating Islet (Draggable)", "Kill On Freeze", 
-                    "Fast Inputs v2", "Autoresponder", "Auto Team/Dummy", "Rainbow Tee/Hook/Weapons", 
-                    "Smooth Camera", "Outlines", "KeyStrokes (Styles)", "Trail", "Pet System", 
-                    "Discord RPC", "WarList v2", "Custom Neon Lasers", "AFK Mode"
-                ],
-                "changelog_data": [
-                    {
-                        ver: "Версия 1.3",
-                        list: [
-                            "Добавлена Click GUI — современное меню управления функциями.",
-                            "Добавлен бинд в настройки управления для вызова Click GUI.",
-                            "Добавлены мини-игры прямо в настройки игры.",
-                            "Добавлена функция 'Replace with Latin': заменяет русские буквы на латиницу в чате.",
-                            "Добавлена функция 'Beautiful Animations': улучшенные анимации (пока для колеса эмоций).",
-                            "Добавлена функция 'Triple Grenade Hint': фантомный тии показывает точку для идеального тройного буста.",
-                            "Добавлена функция 'Adjustable Hammer Rotation': настройка логики поворота молотка.",
-                            "Пасхалка: салюты в главном меню при клике на пустое место.",
-                            "Обновлена функция Winter Vibe (праздничное оформление).",
-                            "Команды WarList теперь имеют подсказки в чате при вводе.",
-                            "Все конфиги клиента перенесены в отдельный файл для удобства.",
-                            "Обновлена функция Fast Input для еще более быстрого отклика.",
-                            "Островок Floating Islet теперь можно перетаскивать мышкой.",
-                            "У функции KeyStrokes теперь можно выбирать стиль отображения клавиш.",
-                            "Функция Custom Backgrounds теперь поддерживает JPG (ранее только PNG).",
-                            "Исправлено огромное количество багов."
-                        ]
-                    },
-                    {
-                        ver: "Версия 1.2",
-                        list: [
-                            "Добавлена функция 'Show when the last player is left'.",
-                            "Интеграция Discord RPC: отображение активности в профиле.",
-                            "Добавлена функция 'Show Dummy Position'.",
-                            "Добавлена опция 'Do Not Repeat Weapons' для движений дамми.",
-                            "Система 'Custom Neon Lasers' для Shotgun и Laser.",
-                            "Добавлена функция 'Show Milliseconds In Timer'.",
-                            "Добавлена функция 'Chat Bubble' над игроками.",
-                            "Оптимизация системы профилей и исправление багов."
-                        ]
-                    },
-                    {
-                        ver: "Версия 1.1",
-                        list: [
-                            "Добавлена функция 'AFK Mode' (визуальный режим отсутствия).",
-                            "Добавлена функция 'Show Katana In Freeze'.",
-                            "Добавлена функция 'Show Stars In Freeze'.",
-                            "Внедрена система 'Winter Vibe' (зимняя атмосфера).",
-                            "Улучшена система автоответчика."
-                        ]
-                    },
-                    {
-                        ver: "Версия 1.0 (Релиз)",
-                        list: [
-                            "Добавлена вкладка 'Koshka' (Settings, Visuals, WarList, Profiles).",
-                            "Функции: Kill On Freeze, Hide Chat Bubble, Custom Backgrounds.",
-                            "Fast Inputs, Auto Team, Auto Dummy Connect.",
-                            "Floating Islet (медиа-остров), Rainbow-эффекты.",
-                            "Smooth Camera, Outlines, KeyStrokes, Trail, Pet System.",
-                            "Система WarList (Enemy, Ally, Mute).",
-                            "Контекстное меню для игроков и своего Tee."
-                        ]
-                    }
-                ]
+                "hero-title": "Новый уровень игры.",
+                "hero-desc": "Минималистичный, мощный и быстрый клиент для DDNet. Создан для тех, кто ценит эстетику и производительность.",
+                "btn-dl-text": "СКАЧАТЬ КЛИЕНТ",
+                "trailer-title": "ТРЕЙЛЕР КЛИЕНТА",
+                "soon-tag": "СКОРО",
+                "trailer-desc": "Трейлер клиента — немного позже",
+                "f1-t": "Click GUI", "f1-d": "Интуитивное управление всеми функциями в одном меню.",
+                "f2-t": "Производительность", "f2-d": "Оптимизированный код для максимального FPS.",
+                "f3-t": "Визуал", "f3-d": "Неоновые лазеры, кастомные хуки и эффекты."
             },
             en: {
-                "hero-title": "KOSHKA CLIENT 1.3",
-                "hero-desc": "High-performance DDNet client featuring unique Click GUI, mini-games, and powerful tools.",
-                "btn-dl-main": "<i class='fas fa-download'></i> DOWNLOAD UPDATE 1.3",
-                "title-full-client": "Full Archive",
-                "title-only-exe": "Executable Only",
-                "main-features-title": "NEW IN <span>VERSION 1.3</span>",
-                "all-features-title": "FULL <span>FEATURE LIST</span>",
-                "changelog-title": "CLIENT <span>HISTORY</span>",
-                "tg-text": "TELEGRAM CHANNEL",
-                "view-btn": "Screenshot",
-                "f1-t": "Click GUI",
-                "f1-d": "Brand new interface to manage all client features. Fast, stylish, and easy to use.",
-                "f2-t": "Mini-Games",
-                "f2-d": "Have fun right in the settings menu! Built-in games added to play while waiting.",
-                "f3-t": "Triple Grenade Hint",
-                "f3-d": "Visual assistant: a phantom tee shows the shooting point for a perfect triple boost.",
-                "features_list": [
-                    "Click GUI (v1.3)", "Mini Games (v1.3)", "Triple Grenade Hint (v1.3)", "Replace with Latin (v1.3)", 
-                    "Beautiful Animations (v1.3)", "Adjustable Hammer Rotation (v1.3)", "Fireworks Easter Egg (v1.3)",
-                    "JPG Background Support (v1.3)", "Floating Islet (Draggable)", "Kill On Freeze", 
-                    "Fast Inputs v2", "Autoresponder", "Auto Team/Dummy", "Rainbow Tee/Hook/Weapons", 
-                    "Smooth Camera", "Outlines", "KeyStrokes (Styles)", "Trail", "Pet System", 
-                    "Discord RPC", "WarList v2", "Custom Neon Lasers", "AFK Mode"
-                ],
-                "changelog_data": [
-                    {
-                        ver: "Version 1.3",
-                        list: [
-                            "Added Click GUI — modern feature management menu.",
-                            "Added bind for Click GUI in controls settings.",
-                            "Added mini-games directly into the game settings.",
-                            "Added 'Replace with Latin': replaces Cyrillic with Latin in chat.",
-                            "Added 'Beautiful Animations': improved UI animations (starting with emote wheel).",
-                            "Added 'Triple Grenade Hint': phantom tee shows where to shoot for a triple boost.",
-                            "Added 'Adjustable Hammer Rotation' logic settings.",
-                            "Easter egg: Fireworks in main menu when clicking empty space.",
-                            "Updated Winter Vibe function (festive design).",
-                            "WarList commands now have suggestions in chat.",
-                            "All client configs moved to a separate file.",
-                            "Updated Fast Input for even better response.",
-                            "Floating Islet is now draggable with the mouse.",
-                            "Added styles selection for KeyStrokes function.",
-                            "Custom Backgrounds now supports JPG files.",
-                            "Fixed a large number of bugs."
-                        ]
-                    },
-                    {
-                        ver: "Version 1.2",
-                        list: [
-                            "Added 'Show when the last player is left' function.",
-                            "Discord RPC Integration.",
-                            "Added 'Show Dummy Position'.",
-                            "Added 'Do Not Repeat Weapons' option.",
-                            "Custom Neon Lasers for Shotgun and Laser.",
-                            "Show Milliseconds In Timer.",
-                            "Added Chat Bubbles above players.",
-                            "Optimized profile system and bug fixes."
-                        ]
-                    },
-                    {
-                        ver: "Version 1.1",
-                        list: [
-                            "Added 'AFK Mode' (visual only).",
-                            "Added 'Show Katana In Freeze'.",
-                            "Added 'Show Stars In Freeze'.",
-                            "Implemented 'Winter Vibe' system.",
-                            "Improved Autoresponder."
-                        ]
-                    },
-                    {
-                        ver: "Version 1.0 (Release)",
-                        list: [
-                            "Added 'Koshka' tab (Settings, Visuals, WarList, Profiles).",
-                            "Kill On Freeze, Hide Chat Bubble, Custom Backgrounds.",
-                            "Fast Inputs, Auto Team, Auto Dummy Connect.",
-                            "Floating Islet (media-hud), Rainbow effects.",
-                            "Smooth Camera, Outlines, KeyStrokes, Trail, Pet System.",
-                            "WarList system (Enemy, Ally, Mute).",
-                            "Context menu for players and own Tee."
-                        ]
-                    }
-                ]
+                "hero-title": "Elevate Your Game.",
+                "hero-desc": "Minimalist, powerful and fast client for DDNet. Built for those who value aesthetics and performance.",
+                "btn-dl-text": "DOWNLOAD CLIENT",
+                "trailer-title": "OFFICIAL TRAILER",
+                "soon-tag": "COMING SOON",
+                "trailer-desc": "Client trailer — coming later",
+                "f1-t": "Click GUI", "f1-d": "Intuitive management of all functions in one menu.",
+                "f2-t": "Performance", "f2-d": "Optimized code for maximum FPS and low latency.",
+                "f3-t": "Visuals", "f3-d": "Neon lasers, custom hooks and beautiful effects."
             }
         };
 
         function setLang(lang) {
-            localStorage.setItem('lang', lang);
+            localStorage.setItem('koshka_lang', lang);
             document.getElementById('lang-ru').classList.toggle('active', lang === 'ru');
             document.getElementById('lang-en').classList.toggle('active', lang === 'en');
             
             const data = translations[lang];
             for (let key in data) {
                 const el = document.getElementById(key);
-                if (el && typeof data[key] === 'string') el.innerHTML = data[key];
+                if (el) el.innerText = data[key];
             }
-
-            document.getElementById('all-features-container').innerHTML = data.features_list
-                .map(item => `<div class="feature-item">${item}</div>`).join('');
-
-            document.getElementById('changelog-content').innerHTML = data.changelog_data.map(version => `
-                <div class="changelog-card">
-                    <div class="changelog-header"><div class="changelog-version">${version.ver}</div></div>
-                    <ul class="changelog-list">${version.list.map(li => `<li>${li}</li>`).join('')}</ul>
-                </div>
-            `).join('');
-
-            document.querySelectorAll('[data-view-text]').forEach(btn => {
-                btn.innerHTML = `<i class='fas fa-image'></i> ${data['view-btn']}`;
-            });
         }
 
-        const savedLang = localStorage.getItem('lang') || 'ru';
-        setLang(savedLang);
+        setLang(localStorage.getItem('koshka_lang') || 'ru');
 
         function toggleDl(e) { e.stopPropagation(); document.getElementById('dlMenu').classList.toggle('active'); }
         document.addEventListener('click', () => document.getElementById('dlMenu').classList.remove('active'));
 
-        function openModal(src) {
-            const modal = document.getElementById('imgModal');
-            document.getElementById('modalImg').src = src;
-            modal.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeModal() {
-            document.getElementById('imgModal').classList.remove('active');
-            document.body.style.overflow = 'auto';
-        }
-
-        // Салют при клике
+        // Fireworks
         document.addEventListener('mousedown', (e) => {
-            const colors = ['#ff0000', '#00ff00', '#00d2ff', '#ffd700', '#ff00ff'];
-            for(let i=0; i<12; i++) {
+            for(let i=0; i<8; i++) {
                 const f = document.createElement('div');
                 f.className = 'firework';
                 f.style.left = e.pageX + 'px';
                 f.style.top = e.pageY + 'px';
-                f.style.backgroundColor = colors[Math.floor(Math.random()*colors.length)];
-                f.style.setProperty('--x', (Math.random()-0.5)*150 + 'px');
-                f.style.setProperty('--y', (Math.random()-0.5)*150 + 'px');
+                f.style.backgroundColor = '#00d2ff';
+                f.style.setProperty('--x', (Math.random()-0.5)*100 + 'px');
+                f.style.setProperty('--y', (Math.random()-0.5)*100 + 'px');
                 document.body.appendChild(f);
-                setTimeout(() => f.remove(), 1000);
+                setTimeout(() => f.remove(), 800);
             }
         });
 
-        // Снег
+        // Optimized Snow
         const canvas = document.getElementById('snow-canvas');
         const ctx = canvas.getContext('2d');
         let w, h, flakes = [];
@@ -491,21 +255,20 @@
         function init() {
             w = window.innerWidth; h = window.innerHeight;
             canvas.width = w; canvas.height = h;
-            flakes = [];
-            for(let i=0; i<70; i++) {
-                flakes.push({ x: Math.random()*w, y: Math.random()*h, s: Math.random()*3+1, v: Math.random()*1+0.3 });
-            }
+            flakes = Array.from({length: 50}, () => ({
+                x: Math.random()*w, y: Math.random()*h, s: Math.random()*2+1, v: Math.random()*0.5+0.2
+            }));
         }
         function draw() {
             ctx.clearRect(0, 0, w, h);
-            ctx.fillStyle = "rgba(255, 255, 255, 0.4)";
+            ctx.fillStyle = "#fff";
             ctx.beginPath();
-            for(let f of flakes) {
+            flakes.forEach(f => {
                 ctx.moveTo(f.x, f.y);
                 ctx.arc(f.x, f.y, f.s, 0, Math.PI*2);
                 f.y += f.v;
                 if(f.y > h) f.y = -5;
-            }
+            });
             ctx.fill();
             requestAnimationFrame(draw);
         }
