@@ -3,122 +3,170 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Koshka Client | Next Gen DDNet</title>
+    <title>Koshka Client | Premium DDNet Experience</title>
     
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
 
     <style>
         :root {
-            --bg: #050608;
-            --panel: rgba(255, 255, 255, 0.03);
-            --primary: #00d2ff; 
-            --text: #ffffff;
+            --bg-dark: #010804;
+            --bg-accent: #051a0d;
+            --primary: #2ecc71;
+            --primary-glow: rgba(46, 204, 113, 0.4);
+            --text: #e0e7e1;
             --text-dim: #94a3b8;
-            --glass-border: rgba(255, 255, 255, 0.08);
-            --accent-glow: rgba(0, 210, 255, 0.3);
+            --glass: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.08);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; scroll-behavior: smooth; }
-        body { background-color: var(--bg); color: var(--text); overflow-x: hidden; line-height: 1.6; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+        body { background-color: var(--bg-dark); color: var(--text); overflow-x: hidden; min-height: 100vh; }
 
-        /* Background Effects */
-        #snow-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; opacity: 0.3; }
-        .bg-glow { 
-            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 600px; height: 600px; background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
-            z-index: -2; filter: blur(80px); opacity: 0.5;
+        /* --- ФОНОВЫЕ ЭФФЕКТЫ --- */
+        .bg-layer {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at 50% -20%, var(--bg-accent) 0%, var(--bg-dark) 80%);
+            z-index: -3;
         }
 
-        /* Навигация */
+        .god-rays {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: repeating-linear-gradient(45deg, transparent, transparent 100px, rgba(46, 204, 113, 0.02) 110px, transparent 120px);
+            z-index: -2; pointer-events: none; opacity: 0.5;
+        }
+
+        #ambient-particles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
+
+        /* --- ПЕРЕДНИЙ ПЛАН (Абстрактные кусты SVG) --- */
+        .foreground {
+            position: fixed; bottom: -20px; left: -10%; width: 120%; height: 250px;
+            z-index: 100; pointer-events: none; display: flex; align-items: flex-end;
+        }
+
+        .foliage {
+            width: 100%; height: 100%; fill: #010603; 
+            filter: drop-shadow(0 -10px 30px rgba(0,0,0,0.8));
+            animation: sway 8s ease-in-out infinite;
+            transform-origin: bottom center;
+        }
+
+        @keyframes sway {
+            0%, 100% { transform: rotate(0deg) scaleX(1); }
+            50% { transform: rotate(1.5deg) scaleX(1.02); }
+        }
+
+        /* --- НАВИГАЦИЯ --- */
         nav {
             display: flex; justify-content: space-between; align-items: center;
-            padding: 20px 10%; position: fixed; width: 100%; top: 0; z-index: 1000;
-            background: rgba(5, 6, 8, 0.8); backdrop-filter: blur(20px); border-bottom: 1px solid var(--glass-border);
+            padding: 20px 8%; position: fixed; width: 100%; top: 0; z-index: 1000;
+            background: rgba(1, 8, 4, 0.8); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border);
         }
-        .logo { font-size: 1.1rem; font-weight: 800; letter-spacing: 2px; display: flex; align-items: center; gap: 10px; }
-        .logo span { color: var(--primary); }
+        .logo { font-size: 1.3rem; font-weight: 800; letter-spacing: -0.5px; }
+        .logo span { color: var(--primary); text-shadow: 0 0 15px var(--primary-glow); }
 
-        .lang-switcher { display: flex; gap: 5px; background: rgba(255,255,255,0.05); padding: 4px; border-radius: 8px; }
+        .lang-switcher { display: flex; background: rgba(255,255,255,0.05); padding: 4px; border-radius: 12px; border: 1px solid var(--border); }
         .lang-btn { 
-            background: none; border: none; color: var(--text-dim); padding: 6px 12px; 
-            border-radius: 6px; cursor: pointer; font-size: 0.7rem; font-weight: 600; transition: 0.3s;
+            background: none; border: none; color: var(--text-dim); padding: 8px 16px; 
+            border-radius: 8px; cursor: pointer; font-size: 0.75rem; font-weight: 700; transition: 0.3s;
         }
-        .lang-btn.active { background: var(--primary); color: #000; }
+        .lang-btn.active { background: var(--text); color: #000; }
 
-        /* Hero Section */
-        .hero { height: 90vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 0 20px; }
-        .version-badge { 
-            background: rgba(0, 210, 255, 0.1); border: 1px solid var(--primary); color: var(--primary);
-            padding: 5px 15px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; margin-bottom: 20px;
+        /* --- ГЛАВНЫЙ БЛОК --- */
+        .hero { 
+            height: 100vh; display: flex; flex-direction: column; align-items: center; 
+            justify-content: center; text-align: center; padding: 0 20px; position: relative; z-index: 10;
         }
-        .hero h1 { font-size: clamp(2.5rem, 10vw, 5rem); font-weight: 800; letter-spacing: -2px; margin-bottom: 20px; line-height: 1; }
-        .hero p { color: var(--text-dim); max-width: 600px; font-size: 1.1rem; margin-bottom: 40px; font-weight: 300; }
-
-        /* Download Button */
-        .download-container { position: relative; width: 100%; max-width: 320px; }
-        .btn-main {
-            width: 100%; padding: 18px 30px; background: var(--text); color: #000; 
-            border: none; border-radius: 12px; font-weight: 700; cursor: pointer;
-            display: flex; align-items: center; justify-content: center; gap: 12px;
-            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        .btn-main:hover { transform: scale(1.02); box-shadow: 0 20px 40px rgba(0,0,0,0.4); background: var(--primary); }
-
-        .dl-menu {
-            position: absolute; top: 110%; left: 0; width: 100%; background: #111418;
-            border: 1px solid var(--glass-border); border-radius: 12px; overflow: hidden;
-            display: none; z-index: 100; box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-        }
-        .dl-menu.active { display: block; animation: slideUp 0.3s ease; }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        .dl-item {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 15px 20px; color: var(--text); text-decoration: none; font-size: 0.9rem;
-            border-bottom: 1px solid var(--glass-border); transition: 0.2s;
-        }
-        .dl-item:hover { background: rgba(255,255,255,0.05); color: var(--primary); }
-        .dl-item span { font-size: 0.7rem; color: var(--text-dim); }
-
-        /* Trailer Section */
-        .section-wrap { padding: 100px 10%; max-width: 1200px; margin: 0 auto; }
-        .section-title { font-size: 1.5rem; font-weight: 800; margin-bottom: 40px; text-align: center; letter-spacing: 2px; }
         
-        .trailer-placeholder {
-            width: 100%; aspect-ratio: 16/9; background: var(--panel);
-            border: 1px solid var(--glass-border); border-radius: 24px;
+        .badge { 
+            background: rgba(46, 204, 113, 0.1); color: var(--primary); border: 1px solid rgba(46, 204, 113, 0.3);
+            padding: 8px 20px; border-radius: 30px; font-size: 0.8rem; font-weight: 800; margin-bottom: 25px;
+            letter-spacing: 1px;
+        }
+
+        .hero h1 { 
+            font-size: clamp(2.5rem, 8vw, 6rem); font-weight: 800; letter-spacing: -3px; line-height: 0.95; margin-bottom: 25px;
+            background: linear-gradient(to bottom, #fff 50%, #64748b); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .hero p { color: var(--text-dim); max-width: 650px; font-size: 1.2rem; margin-bottom: 45px; }
+
+        /* Кнопка загрузки */
+        .dl-container { position: relative; width: 100%; max-width: 380px; }
+        .btn-main {
+            width: 100%; padding: 22px; background: var(--text); color: #000; 
+            border: none; border-radius: 20px; font-weight: 800; cursor: pointer;
+            display: flex; align-items: center; justify-content: center; gap: 15px;
+            transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1); font-size: 1.1rem;
+        }
+        .btn-main:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(46, 204, 113, 0.2); background: var(--primary); }
+
+        .dl-dropdown {
+            position: absolute; top: calc(100% + 15px); left: 0; width: 100%; 
+            background: rgba(10, 20, 15, 0.95); backdrop-filter: blur(25px);
+            border: 1px solid var(--border); border-radius: 24px; overflow: hidden;
+            display: none; z-index: 100; box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+        }
+        .dl-dropdown.active { display: block; animation: fadeInUp 0.4s ease; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+
+        .dl-link {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px 25px; color: #fff; text-decoration: none; font-size: 1rem;
+            border-bottom: 1px solid var(--border); transition: 0.2s;
+        }
+        .dl-link:hover { background: rgba(255,255,255,0.05); color: var(--primary); padding-left: 30px; }
+        .dl-link span { font-size: 0.75rem; color: var(--text-dim); background: rgba(255,255,255,0.05); padding: 4px 10px; border-radius: 6px; }
+
+        /* --- СЕКЦИИ --- */
+        .section { padding: 100px 8%; max-width: 1400px; margin: 0 auto; position: relative; z-index: 10; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; }
+        
+        .card { 
+            padding: 50px 40px; background: var(--glass); border: 1px solid var(--border); 
+            border-radius: 32px; transition: 0.4s;
+        }
+        .card:hover { border-color: var(--primary); transform: translateY(-10px); background: rgba(46, 204, 113, 0.02); }
+        .card i { font-size: 2.5rem; color: var(--primary); margin-bottom: 25px; display: block; }
+        .card h3 { font-size: 1.5rem; margin-bottom: 15px; font-weight: 700; }
+        .card p { color: var(--text-dim); font-size: 1rem; line-height: 1.7; }
+
+        /* Трейлер */
+        .preview-box {
+            width: 100%; aspect-ratio: 16/9; background: #000; border: 1px solid var(--border); border-radius: 40px;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             position: relative; overflow: hidden;
         }
-        .trailer-placeholder i { font-size: 4rem; color: var(--primary); opacity: 0.5; margin-bottom: 15px; }
-        .coming-soon-tag {
-            background: var(--primary); color: #000; padding: 5px 15px; border-radius: 5px;
-            font-size: 0.7rem; font-weight: 900; text-transform: uppercase;
+        .play-icon { width: 90px; height: 90px; background: #fff; color: #000; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; margin-bottom: 20px; transition: 0.3s; }
+        .preview-box:hover .play-icon { transform: scale(1.1); background: var(--primary); }
+
+        footer { padding: 100px 8% 180px; text-align: center; position: relative; z-index: 10; border-top: 1px solid var(--border); }
+        .tg-btn { 
+            display: inline-flex; align-items: center; gap: 12px; padding: 16px 35px; 
+            background: rgba(46, 204, 113, 0.1); color: var(--primary); text-decoration: none; border-radius: 15px;
+            font-weight: 700; transition: 0.3s; border: 1px solid var(--primary);
         }
-
-        /* Features Mini */
-        .features-lite { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; margin-top: 50px; }
-        .f-card { padding: 30px; background: var(--panel); border-radius: 20px; border: 1px solid var(--glass-border); }
-        .f-card h3 { font-size: 1rem; margin-bottom: 10px; color: var(--primary); }
-        .f-card p { font-size: 0.85rem; color: var(--text-dim); }
-
-        footer { padding: 80px 20px; text-align: center; opacity: 0.6; font-size: 0.8rem; }
-
-        /* Firework Effect */
-        .firework { position: absolute; width: 3px; height: 3px; border-radius: 50%; pointer-events: none; animation: explode 0.8s ease-out forwards; }
-        @keyframes explode { 0% { transform: translate(0,0); opacity: 1; } 100% { transform: translate(var(--x), var(--y)); opacity: 0; } }
+        .tg-btn:hover { background: var(--primary); color: #000; transform: translateY(-3px); }
 
         @media (max-width: 768px) {
-            .hero h1 { font-size: 3rem; }
-            nav { padding: 15px 5%; }
+            .hero h1 { font-size: 3.5rem; }
+            .foreground { height: 150px; }
+            .section { padding: 60px 5%; }
         }
     </style>
 </head>
 <body>
 
-    <div class="bg-glow"></div>
-    <canvas id="snow-canvas"></canvas>
+    <div class="bg-layer"></div>
+    <div class="god-rays"></div>
+    <canvas id="ambient-particles"></canvas>
+
+    <!-- ПЕРЕДНИЙ ПЛАН: Абстрактные формы растительности -->
+    <div class="foreground" id="foliageContainer">
+        <svg class="foliage" viewBox="0 0 1000 200" preserveAspectRatio="none">
+            <path d="M0,200 L0,140 C40,110 80,180 130,130 C180,80 230,160 280,110 C330,60 380,170 430,120 C480,70 530,180 580,130 C630,80 680,160 730,110 C780,60 830,170 880,120 C930,70 970,110 1000,140 L1000,200 Z"></path>
+            <path d="M0,200 L0,170 C20,150 50,190 80,150 C110,110 140,180 170,130 C200,80 230,170 260,120 C290,70 320,160 350,110 C380,60 410,150 440,100 C470,50 500,140 530,90 C560,40 590,130 620,80 C650,30 680,120 710,70 C740,20 770,110 800,60 C830,10 860,100 890,50 C920,0 950,70 1000,160 L1000,200 Z" opacity="0.4"></path>
+        </svg>
+    </div>
 
     <nav>
         <div class="logo">KOSHKA<span>CLIENT</span></div>
@@ -129,147 +177,153 @@
     </nav>
 
     <header class="hero">
-        <div class="version-badge">v1.4 Available Now</div>
-        <h1 id="hero-title">Elevate Your Game.</h1>
-        <p id="hero-desc">Минималистичный, мощный и быстрый клиент для DDNet. Создан для тех, кто ценит эстетику и производительность.</p>
+        <div class="badge" id="v-badge">Build 1.5.0 Available</div>
+        <h1 id="h-title">Ультимативный опыт DDNet.</h1>
+        <p id="h-desc">Безупречная производительность, глубокая кастомизация и современный дизайн. Мы создали инструмент для тех, кто стремится к совершенству в каждом движении.</p>
         
-        <div class="download-container">
-            <button class="btn-main" onclick="toggleDl(event)">
-                <i class="fas fa-arrow-down"></i> <span id="btn-dl-text">СКАЧАТЬ КЛИЕНТ</span>
+        <div class="dl-container">
+            <button class="btn-main" onclick="toggleMenu(event)">
+                <i class="fas fa-arrow-down-long"></i> <span id="btn-dl">СКАЧАТЬ СЕЙЧАС</span>
             </button>
-            <div class="dl-menu" id="dlMenu">
-                <div style="padding: 10px 20px; font-size: 0.65rem; color: var(--primary); font-weight: 800;">WINDOWS</div>
-                <a href="https://drive.google.com/file/d/10CFKUM6rTX_3i5Hfs4i1v-2cDo8dE1Kx/view?usp=drive_link" class="dl-item">
-                    Full Archive <span>v1.4</span>
+            <div class="dl-dropdown" id="dlDropdown">
+                <div style="padding: 18px 25px 8px; font-size: 0.7rem; color: var(--primary); font-weight: 800; text-transform: uppercase; letter-spacing: 1px;">Windows x64</div>
+                <a href="https://drive.google.com/file/d/1RKeFxEPGqqUpo-ZxkyDhXCUpIKBgge8g/view?usp=drive_link" class="dl-link" target="_blank">
+                    <span id="dl-full">Полный архив (.zip)</span> <span>v1.5</span>
                 </a>
-                <a href="https://drive.google.com/file/d/1vbVzJa_JL_uu_6Lj9w6m2tIlwsD75r48/view?usp=drive_link" class="dl-item">
-                    Only EXE <span>v1.4</span>
+                <a href="https://drive.google.com/file/d/13bgkUgadFxANc1oRbmNV7xDa506k1qGj/view?usp=drive_link" class="dl-link" target="_blank">
+                    <span id="dl-exe">Только EXE файл</span> <span>v1.5</span>
                 </a>
-                <a href="https://drive.google.com/file/d/1iwJTBfjhcATQQLYoQFtBAeBpvvCUsVDN/view?usp=drive_link" class="dl-item">
-                    Windows x86 <span>v1.2</span>
-                </a>
-                <div style="padding: 10px 20px; font-size: 0.65rem; color: var(--primary); font-weight: 800; border-top: 1px solid var(--glass-border);">LINUX</div>
-                <a href="https://drive.google.com/file/d/1ZpLNrWUR4mp7VFGbZp_vFyyOrN6ZljOj/view?usp=drive_link" class="dl-item">
-                    Linux Binary <span>v1.3</span>
-                </a>
+                <div style="padding: 18px 25px 8px; font-size: 0.7rem; color: var(--primary); font-weight: 800; text-transform: uppercase; border-top: 1px solid var(--border);">Other OS</div>
+                <div class="dl-link" style="opacity: 0.5; cursor: default;">
+                    <span id="dl-linux">Версия для Linux позже</span>
+                </div>
             </div>
         </div>
     </header>
 
-    <section class="section-wrap">
-        <h2 class="section-title" id="trailer-title">OFFICIAL TRAILER</h2>
-        <div class="trailer-placeholder">
-            <i class="fas fa-play-circle"></i>
-            <div class="coming-soon-tag" id="soon-tag">Coming Soon</div>
-            <p style="margin-top: 20px; color: var(--text-dim); font-size: 0.9rem;" id="trailer-desc">Мы готовим видеообзор новой версии 1.4</p>
+    <section class="section">
+        <div class="grid">
+            <div class="card">
+                <i class="fas fa-terminal"></i>
+                <h3 id="f1-t">Click GUI</h3>
+                <p id="f1-d">Интуитивное меню управления функциями. Настраивайте клиент прямо во время игры с помощью удобного визуального интерфейса.</p>
+            </div>
+            <div class="card">
+                <i class="fas fa-gauge-high"></i>
+                <h3 id="f2-t">Performance</h3>
+                <p id="f2-d">Плавный геймплей со стабильным высоким FPS.</p>
+            </div>
+            <div class="card">
+                <i class="fas fa-palette"></i>
+                <h3 id="f3-t">Visuals</h3>
+                <p id="f3-d">Продвинутые визуальные настройки: от кастомных лазеров и хуков до уникальных эффектов окружения и анимаций.</p>
+            </div>
         </div>
     </section>
 
-    <section class="section-wrap" style="padding-top: 0;">
-        <div class="features-lite">
-            <div class="f-card">
-                <h3 id="f1-t">Click GUI</h3>
-                <p id="f1-d">Интуитивное управление всеми функциями клиента в один клик.</p>
-            </div>
-            <div class="f-card">
-                <h3 id="f2-t">Performance</h3>
-                <p id="f2-d">Максимальный FPS и минимальная задержка ввода (Fast Input).</p>
-            </div>
-            <div class="f-card">
-                <h3 id="f3-t">Visuals</h3>
-                <p id="f3-d">От кастомных фонов до неоновых лазеров и продвинутых анимаций.</p>
-            </div>
+    <section class="section" style="padding-top: 0;">
+        <h2 style="text-align: center; margin-bottom: 50px; font-size: 2rem;" id="t-title">ПРЕВЬЮ ОБНОВЛЕНИЯ</h2>
+        <div class="preview-box">
+            <div class="play-icon"><i class="fas fa-play"></i></div>
+            <p style="font-weight: 800; color: var(--primary); letter-spacing: 2px;" id="v-status">COMING SOON</p>
+            <p style="font-size: 0.9rem; color: var(--text-dim); margin-top: 10px;" id="v-desc">Официальный видеообзор версии 1.5 в процессе подготовки</p>
         </div>
     </section>
 
     <footer>
-        <div style="margin-bottom: 20px;">
-            <a href="https://t.me/KoshkaClientF" target="_blank" style="color: var(--primary); text-decoration: none; font-weight: 600;">Telegram Channel</a>
-        </div>
-        <p>&copy; 2025-2026 Koshka Client. Build 1.4.0</p>
+        <a href="https://t.me/KoshkaClientF" target="_blank" class="tg-btn">
+            <i class="fab fa-telegram-plane"></i> <span id="btn-tg">TELEGRAM КАНАЛ</span>
+        </a>
+        <p style="color: var(--text-dim); font-size: 0.85rem; margin-top: 40px;">&copy; 2025-2026 Koshka Client System. All Rights Reserved.</p>
     </footer>
 
     <script>
         const translations = {
             ru: {
-                "hero-title": "Новый уровень игры.",
-                "hero-desc": "Минималистичный, мощный и быстрый клиент для DDNet. Создан для тех, кто ценит эстетику и производительность.",
-                "btn-dl-text": "СКАЧАТЬ КЛИЕНТ",
-                "trailer-title": "ТРЕЙЛЕР КЛИЕНТА",
-                "soon-tag": "СКОРО",
-                "trailer-desc": "Трейлер клиента — немного позже",
-                "f1-t": "Click GUI", "f1-d": "Интуитивное управление всеми функциями в одном меню.",
-                "f2-t": "Производительность", "f2-d": "Оптимизированный код для максимального FPS.",
-                "f3-t": "Визуал", "f3-d": "Неоновые лазеры, кастомные хуки и эффекты."
+                "v-badge": "Сборка 1.5.0 Доступна",
+                "h-title": "Ультимативный опыт DDNet.",
+                "h-desc": "Безупречная производительность, глубокая кастомизация и современный дизайн. Мы создали инструмент для тех, кто стремится к совершенству в каждом движении.",
+                "btn-dl": "СКАЧАТЬ СЕЙЧАС",
+                "dl-full": "Полный архив (.zip)",
+                "dl-exe": "Только EXE файл",
+                "dl-linux": "Версия для Linux позже",
+                "f1-t": "Click GUI", "f1-d": "Интуитивное меню управления функциями. Настраивайте клиент прямо во время игры с помощью визуального интерфейса.",
+                "f2-t": "Производительность", "f2-d": "Плавный геймплей со стабильным высоким FPS.",
+                "f3-t": "Визуал", "f3-d": "Продвинутые визуальные настройки: от кастомных лазеров до уникальных эффектов и анимаций.",
+                "t-title": "ПРЕВЬЮ ОБНОВЛЕНИЯ",
+                "v-status": "В МОНТАЖЕ", "v-desc": "Официальный видеообзор версии 1.5 скоро будет доступен.",
+                "btn-tg": "КАНАЛ В TELEGRAM"
             },
             en: {
-                "hero-title": "Elevate Your Game.",
-                "hero-desc": "Minimalist, powerful and fast client for DDNet. Built for those who value aesthetics and performance.",
-                "btn-dl-text": "DOWNLOAD CLIENT",
-                "trailer-title": "OFFICIAL TRAILER",
-                "soon-tag": "COMING SOON",
-                "trailer-desc": "Client trailer — coming later",
-                "f1-t": "Click GUI", "f1-d": "Intuitive management of all functions in one menu.",
-                "f2-t": "Performance", "f2-d": "Optimized code for maximum FPS and low latency.",
-                "f3-t": "Visuals", "f3-d": "Neon lasers, custom hooks and beautiful effects."
+                "v-badge": "Build 1.5.0 Available",
+                "h-title": "Ultimate DDNet Experience.",
+                "h-desc": "Flawless performance, deep customization and modern design. We built a tool for those who strive for perfection in every move.",
+                "btn-dl": "DOWNLOAD NOW",
+                "dl-full": "Full Archive (.zip)",
+                "dl-exe": "Executable Only",
+                "dl-linux": "Linux version coming later",
+                "f1-t": "Click GUI", "f1-d": "Intuitive function management menu. Customize your client on the fly with a convenient visual interface.",
+                "f2-t": "Performance", "f2-d": "Smooth gameplay with consistently high FPS.",
+                "f3-t": "Visuals", "f3-d": "Advanced visual settings: from custom lasers and hooks to unique world effects and animations.",
+                "t-title": "UPDATE PREVIEW",
+                "v-status": "COMING SOON", "v-desc": "Official v1.5 video review is currently under production.",
+                "btn-tg": "JOIN TELEGRAM"
             }
         };
 
         function setLang(lang) {
-            localStorage.setItem('koshka_lang', lang);
-            document.getElementById('lang-ru').classList.toggle('active', lang === 'ru');
-            document.getElementById('lang-en').classList.toggle('active', lang === 'en');
+            localStorage.setItem('k_lang', lang);
+            document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById('lang-' + lang).classList.add('active');
             
-            const data = translations[lang];
-            for (let key in data) {
+            for (let key in translations[lang]) {
                 const el = document.getElementById(key);
-                if (el) el.innerText = data[key];
+                if (el) el.innerText = translations[lang][key];
             }
         }
 
-        setLang(localStorage.getItem('koshka_lang') || 'ru');
+        setLang(localStorage.getItem('k_lang') || 'ru');
 
-        function toggleDl(e) { e.stopPropagation(); document.getElementById('dlMenu').classList.toggle('active'); }
-        document.addEventListener('click', () => document.getElementById('dlMenu').classList.remove('active'));
+        function toggleMenu(e) {
+            e.stopPropagation();
+            document.getElementById('dlDropdown').classList.toggle('active');
+        }
 
-        // Fireworks
-        document.addEventListener('mousedown', (e) => {
-            for(let i=0; i<8; i++) {
-                const f = document.createElement('div');
-                f.className = 'firework';
-                f.style.left = e.pageX + 'px';
-                f.style.top = e.pageY + 'px';
-                f.style.backgroundColor = '#00d2ff';
-                f.style.setProperty('--x', (Math.random()-0.5)*100 + 'px');
-                f.style.setProperty('--y', (Math.random()-0.5)*100 + 'px');
-                document.body.appendChild(f);
-                setTimeout(() => f.remove(), 800);
-            }
+        document.addEventListener('click', () => {
+            document.getElementById('dlDropdown').classList.remove('active');
         });
 
-        // Optimized Snow
-        const canvas = document.getElementById('snow-canvas');
+        // Параллакс эффект для переднего плана
+        document.addEventListener('mousemove', (e) => {
+            const foliage = document.getElementById('foliageContainer');
+            const moveX = (window.innerWidth / 2 - e.pageX) / 50;
+            foliage.style.transform = `translateX(${moveX}px)`;
+        });
+
+        // Частицы светлячков (Ambient dots)
+        const canvas = document.getElementById('ambient-particles');
         const ctx = canvas.getContext('2d');
-        let w, h, flakes = [];
+        let w, h, dots = [];
 
         function init() {
             w = window.innerWidth; h = window.innerHeight;
             canvas.width = w; canvas.height = h;
-            flakes = Array.from({length: 50}, () => ({
-                x: Math.random()*w, y: Math.random()*h, s: Math.random()*2+1, v: Math.random()*0.5+0.2
+            dots = Array.from({length: 45}, () => ({
+                x: Math.random()*w, y: Math.random()*h, r: Math.random()*1.5+0.5, 
+                vx: Math.random()*0.4-0.2, vy: Math.random()*0.4-0.2, o: Math.random()
             }));
         }
         function draw() {
             ctx.clearRect(0, 0, w, h);
-            ctx.fillStyle = "#fff";
-            ctx.beginPath();
-            flakes.forEach(f => {
-                ctx.moveTo(f.x, f.y);
-                ctx.arc(f.x, f.y, f.s, 0, Math.PI*2);
-                f.y += f.v;
-                if(f.y > h) f.y = -5;
+            dots.forEach(d => {
+                ctx.fillStyle = `rgba(46, 204, 113, ${d.o})`;
+                ctx.beginPath();
+                ctx.arc(d.x, d.y, d.r, 0, Math.PI*2);
+                ctx.fill();
+                d.x += d.vx; d.y += d.vy;
+                if(d.x<0 || d.x>w) d.vx*=-1;
+                if(d.y<0 || d.y>h) d.vy*=-1;
             });
-            ctx.fill();
             requestAnimationFrame(draw);
         }
         window.addEventListener('resize', init);
