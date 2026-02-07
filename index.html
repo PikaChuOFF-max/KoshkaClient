@@ -5,347 +5,313 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Koshka Client | Premium DDNet Experience</title>
     
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 125'><path fill='%23a55eea' d='M72.54,36.23c-.61-5.44-4.21-8.87-7.78-11C67.54,15.88,67,10.82,67,10.82a39.26,39.26,0,0,0-9.49,10.05C59.15,13.49,56.58,5,56.58,5c-13,4.56-13.49,18.23-17.44,18.91S27.73,31.54,26.51,41.24,21,55.93,21,55.93c1.45,9.65,8.8,15.27,21,17.82C58.35,77.16,66.44,95,66.44,95,71.51,66.29,57,60.37,63.11,60.37s11.32-1.89,15.16-11.15C81.25,42.06,73.67,46.22,72.54,36.23Z'/></svg>">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
 
     <style>
         :root {
-            --bg-dark: #010804;
-            --bg-accent: #051a0d;
-            --primary: #2ecc71;
-            --primary-glow: rgba(46, 204, 113, 0.4);
-            --discord: #5865F2;
-            --text: #e0e7e1;
+            --primary: #a55eea;
+            --primary-glow: rgba(165, 94, 234, 0.3);
+            --bg: #050208;
+            --text: #f0f0f2;
             --text-dim: #94a3b8;
             --glass: rgba(255, 255, 255, 0.03);
-            --border: rgba(255, 255, 255, 0.08);
+            --border: rgba(165, 94, 234, 0.15);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
-        body { background-color: var(--bg-dark); color: var(--text); overflow-x: hidden; min-height: 100vh; }
+        
+        body { 
+            background-color: var(--bg); 
+            color: var(--text); 
+            overflow-x: hidden; 
+            min-height: 100vh;
+            line-height: 1.5;
+        }
 
         .bg-layer {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at 50% -20%, var(--bg-accent) 0%, var(--bg-dark) 80%);
-            z-index: -3;
+            background: radial-gradient(circle at 50% 20%, #1a0b2e 0%, var(--bg) 80%);
+            z-index: -2;
         }
 
-        .god-rays {
+        .cyber-grid {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: repeating-linear-gradient(45deg, transparent, transparent 100px, rgba(46, 204, 113, 0.02) 110px, transparent 120px);
-            z-index: -2; pointer-events: none; opacity: 0.5;
+            background-image: linear-gradient(var(--border) 1px, transparent 1px), 
+                              linear-gradient(90deg, var(--border) 1px, transparent 1px);
+            background-size: 50px 50px;
+            mask-image: radial-gradient(circle, black, transparent 80%);
+            z-index: -1; opacity: 0.5;
+            animation: gridPulse 10s ease-in-out infinite;
         }
 
-        #ambient-particles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
-
-        .foreground {
-            position: fixed; bottom: -20px; left: -10%; width: 120%; height: 250px;
-            z-index: 5;
-            pointer-events: none; display: flex; align-items: flex-end;
-        }
-        .foliage {
-            width: 100%; height: 100%; fill: #010603; 
-            filter: drop-shadow(0 -10px 30px rgba(0,0,0,0.8));
-            animation: sway 8s ease-in-out infinite;
-            transform-origin: bottom center;
-        }
-        @keyframes sway {
-            0%, 100% { transform: rotate(0deg) scaleX(1); }
-            50% { transform: rotate(1.5deg) scaleX(1.02); }
-        }
+        @keyframes gridPulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 0.6; } }
 
         nav {
             display: flex; justify-content: space-between; align-items: center;
             padding: 20px 8%; position: fixed; width: 100%; top: 0; z-index: 1000;
-            background: rgba(1, 8, 4, 0.8); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border);
+            background: rgba(5, 2, 8, 0.7); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border);
         }
-        .logo { font-size: 1.3rem; font-weight: 800; letter-spacing: -0.5px; }
+        .logo { font-size: 1.2rem; font-weight: 800; letter-spacing: -1px; text-transform: uppercase; }
         .logo span { color: var(--primary); text-shadow: 0 0 15px var(--primary-glow); }
 
-        .lang-switcher { display: flex; background: rgba(255,255,255,0.05); padding: 4px; border-radius: 12px; border: 1px solid var(--border); }
         .lang-btn { 
-            background: none; border: none; color: var(--text-dim); padding: 8px 16px; 
-            border-radius: 8px; cursor: pointer; font-size: 0.75rem; font-weight: 700; transition: 0.3s;
+            background: var(--glass); border: 1px solid var(--border); color: #fff;
+            padding: 8px 16px; border-radius: 10px; cursor: pointer; font-weight: 700; font-size: 0.75rem;
+            transition: 0.3s;
         }
-        .lang-btn.active { background: var(--text); color: #000; }
+        .lang-btn:hover { background: var(--primary); border-color: var(--primary); }
 
         .hero { 
-            height: 100vh; display: flex; flex-direction: column; align-items: center; 
-            justify-content: center; text-align: center; padding: 0 20px; 
-            position: relative; z-index: 50;
+            padding: 140px 20px 60px; display: flex; flex-direction: column; align-items: center; text-align: center; 
         }
+
+        .hologram-viewport {
+            position: relative; width: min(300px, 70vw); height: min(300px, 70vw);
+            display: flex; align-items: center; justify-content: center; margin-bottom: 30px;
+        }
+        .h-ring {
+            position: absolute; border: 1px solid var(--primary); border-radius: 50%; opacity: 0.2;
+            border-style: dashed; animation: rotate 20s linear infinite;
+        }
+        .ring-1 { width: 100%; height: 100%; }
+        .ring-2 { width: 80%; height: 80%; animation-direction: reverse; animation-duration: 15s; }
         
+        .logo-main {
+            width: 70%; height: 70%; fill: var(--primary);
+            filter: drop-shadow(0 0 25px var(--primary-glow));
+            animation: float 5s ease-in-out infinite; z-index: 10;
+        }
+
+        @keyframes rotate { from { transform: rotate(0); } to { transform: rotate(360deg); } }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+
         .badge { 
-            background: rgba(46, 204, 113, 0.1); color: var(--primary); border: 1px solid rgba(46, 204, 113, 0.3);
-            padding: 8px 20px; border-radius: 30px; font-size: 0.8rem; font-weight: 800; margin-bottom: 25px;
+            background: rgba(165, 94, 234, 0.1); color: var(--primary); border: 1px solid var(--primary);
+            padding: 6px 16px; border-radius: 30px; font-size: 0.75rem; font-weight: 800; margin-bottom: 20px;
             letter-spacing: 1px;
         }
-
-        .hero h1 { 
-            font-size: clamp(2.5rem, 8vw, 6rem); font-weight: 800; letter-spacing: -3px; line-height: 0.95; margin-bottom: 25px;
-            background: linear-gradient(to bottom, #fff 50%, #64748b); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        h1 { 
+            font-size: clamp(2.2rem, 8vw, 4.5rem); font-weight: 800; line-height: 1; margin-bottom: 20px;
+            background: linear-gradient(to bottom, #fff, #a1a1aa); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
-        .hero p { color: var(--text-dim); max-width: 650px; font-size: 1.2rem; margin-bottom: 45px; }
+        .desc { color: var(--text-dim); max-width: 600px; font-size: 1.1rem; margin-bottom: 40px; }
 
-        .dl-container { position: relative; width: 100%; max-width: 420px; z-index: 2000; }
+        .dl-container { position: relative; width: 100%; max-width: 380px; }
         .btn-main {
-            width: 100%; padding: 22px; background: var(--text); color: #000; 
-            border: none; border-radius: 20px; font-weight: 800; cursor: pointer;
-            display: flex; align-items: center; justify-content: center; gap: 15px;
-            transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1); font-size: 1.1rem;
+            width: 100%; padding: 20px; background: #fff; color: #000; border: none;
+            border-radius: 18px; font-weight: 800; cursor: pointer; transition: 0.3s cubic-bezier(0.2, 1, 0.3, 1);
+            display: flex; align-items: center; justify-content: center; gap: 12px; font-size: 1rem;
         }
-        .btn-main:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(46, 204, 113, 0.2); background: var(--primary); }
+        .btn-main:hover { transform: translateY(-4px); box-shadow: 0 15px 30px var(--primary-glow); background: var(--primary); color: #fff; }
 
-        .dl-dropdown {
-            position: absolute; top: calc(100% + 15px); left: 0; width: 100%; 
-            background: rgba(10, 20, 15, 0.98); backdrop-filter: blur(25px);
-            border: 1px solid var(--border); border-radius: 24px;
-            display: none; z-index: 3000; box-shadow: 0 30px 60px rgba(0,0,0,0.8);
-            padding-bottom: 10px;
+        .dropdown {
+            position: absolute; top: calc(100% + 12px); left: 0; width: 100%;
+            background: rgba(15, 10, 25, 0.98); backdrop-filter: blur(20px);
+            border: 1px solid var(--border); border-radius: 20px; display: none;
+            z-index: 100; overflow: hidden; box-shadow: 0 30px 60px rgba(0,0,0,0.5);
         }
-        .dl-dropdown.active { display: block; animation: fadeInUp 0.4s ease; }
+        .dropdown.active { display: block; animation: slideUp 0.3s ease; }
         
-        .dl-group-label {
-            padding: 18px 25px 8px; font-size: 0.65rem; color: var(--primary); 
-            font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; text-align: left;
+        .dl-item { 
+            display: flex; justify-content: space-between; padding: 14px 20px; 
+            color: #fff; text-decoration: none; border-bottom: 1px solid rgba(255,255,255,0.05); transition: 0.2s;
+            font-size: 0.9rem;
         }
+        .dl-item:hover { background: rgba(165, 94, 234, 0.1); color: var(--primary); }
 
-        .dl-link {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 14px 25px; color: #fff; text-decoration: none; font-size: 0.9rem;
-            border-bottom: 1px solid var(--border); transition: 0.2s;
-            cursor: pointer;
+        @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .grid { 
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+            gap: 20px; padding: 40px 8% 80px;
         }
-        .dl-link:hover { background: rgba(255,255,255,0.05); color: var(--primary); padding-left: 30px; }
-        .dl-link div { display: flex; align-items: center; gap: 12px; }
-        .dl-link .v-tag { font-size: 0.65rem; color: var(--text-dim); background: rgba(255,255,255,0.05); padding: 3px 8px; border-radius: 5px; }
-
-        .section { padding: 100px 8%; max-width: 1400px; margin: 0 auto; position: relative; z-index: 10; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; }
-        
         .card { 
-            padding: 50px 40px; background: var(--glass); border: 1px solid var(--border); 
-            border-radius: 32px; transition: 0.4s;
+            padding: 40px; background: var(--glass); border: 1px solid var(--border); 
+            border-radius: 30px; transition: 0.3s;
         }
-        .card:hover { border-color: var(--primary); transform: translateY(-10px); background: rgba(46, 204, 113, 0.02); }
-        .card i { font-size: 2.5rem; color: var(--primary); margin-bottom: 25px; display: block; }
-        .card h3 { font-size: 1.5rem; margin-bottom: 15px; font-weight: 700; }
-        .card p { color: var(--text-dim); font-size: 1rem; line-height: 1.7; }
+        .card:hover { border-color: var(--primary); background: rgba(165, 94, 234, 0.05); transform: translateY(-5px); }
+        .card i { font-size: 2rem; color: var(--primary); margin-bottom: 20px; display: block; }
+        .card h3 { font-size: 1.5rem; margin-bottom: 12px; }
+        .card p { color: var(--text-dim); font-size: 0.95rem; line-height: 1.6; }
 
-        .preview-box {
-            width: 100%; aspect-ratio: 16/9; background: #000; border: 1px solid var(--border); border-radius: 40px;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            position: relative; overflow: hidden;
+        .video-section { padding: 0 8% 100px; text-align: center; }
+        .video-box {
+            width: 100%; aspect-ratio: 16/9; background: #000; border: 1px solid var(--border);
+            border-radius: 30px; display: flex; flex-direction: column; align-items: center; justify-content: center;
         }
-        .play-icon { width: 90px; height: 90px; background: #fff; color: #000; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; margin-bottom: 20px; transition: 0.3s; }
-        .preview-box:hover .play-icon { transform: scale(1.1); background: var(--primary); }
+        .play-btn { width: 70px; height: 70px; background: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; color: #000; margin-bottom: 15px; }
 
-        footer { padding: 100px 8% 180px; text-align: center; position: relative; z-index: 10; border-top: 1px solid var(--border); }
-        
-        .social-links { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-bottom: 40px; }
-        .social-btn { 
-            display: inline-flex; align-items: center; gap: 12px; padding: 16px 30px; 
-            text-decoration: none; border-radius: 15px; font-weight: 700; transition: 0.3s; 
+        footer { padding: 60px 8%; border-top: 1px solid var(--border); text-align: center; }
+        .socials { display: flex; gap: 15px; justify-content: center; margin-bottom: 30px; flex-wrap: wrap; }
+        .soc-btn { 
+            padding: 14px 24px; border-radius: 14px; text-decoration: none; font-weight: 700; 
+            font-size: 0.85rem; transition: 0.3s; display: flex; align-items: center; gap: 8px;
+            background: rgba(165, 94, 234, 0.05); color: var(--primary); border: 1px solid var(--border);
         }
-        .tg-btn { background: rgba(46, 204, 113, 0.1); color: var(--primary); border: 1px solid var(--primary); }
-        .tg-btn:hover { background: var(--primary); color: #000; transform: translateY(-3px); }
-        .ds-btn { background: rgba(88, 101, 242, 0.1); color: var(--discord); border: 1px solid var(--discord); }
-        .ds-btn:hover { background: var(--discord); color: #fff; transform: translateY(-3px); }
-
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        .soc-btn:hover { background: var(--primary); color: #fff; transform: translateY(-3px); }
 
         @media (max-width: 768px) {
-            .hero h1 { font-size: 3.5rem; }
-            .foreground { height: 150px; }
-            .social-links { flex-direction: column; align-items: center; }
-            .social-btn { width: 100%; max-width: 300px; justify-content: center; }
+            nav { padding: 15px 5%; }
+            .hero { padding-top: 120px; }
+            h1 { font-size: 2.2rem; }
+            .grid { padding: 20px 5% 60px; }
+            .card { padding: 30px; }
         }
     </style>
 </head>
 <body>
 
     <div class="bg-layer"></div>
-    <div class="god-rays"></div>
-    <canvas id="ambient-particles"></canvas>
-
-    <div class="foreground" id="foliageContainer">
-        <svg class="foliage" viewBox="0 0 1000 200" preserveAspectRatio="none">
-            <path d="M0,200 L0,140 C40,110 80,180 130,130 C180,80 230,160 280,110 C330,60 380,170 430,120 C480,70 530,180 580,130 C630,80 680,160 730,110 C780,60 830,170 880,120 C930,70 970,110 1000,140 L1000,200 Z"></path>
-            <path d="M0,200 L0,170 C20,150 50,190 80,150 C110,110 140,180 170,130 C200,80 230,170 260,120 C290,70 320,160 350,110 C380,60 410,150 440,100 C470,50 500,140 530,90 C560,40 590,130 620,80 C650,30 680,120 710,70 C740,20 770,110 800,60 C830,10 860,100 890,50 C920,0 950,70 1000,160 L1000,200 Z" opacity="0.4"></path>
-        </svg>
-    </div>
+    <div class="cyber-grid"></div>
 
     <nav>
-        <div class="logo">KOSHKA<span>CLIENT</span></div>
-        <div class="lang-switcher">
-            <button class="lang-btn active" onclick="setLang('ru')" id="lang-ru">RU</button>
-            <button class="lang-btn" onclick="setLang('en')" id="lang-en">EN</button>
-        </div>
+        <div class="logo">Koshka<span>Client</span></div>
+        <button class="lang-btn" onclick="toggleLang()" id="lang-btn">RU / EN</button>
     </nav>
 
     <header class="hero">
-        <div class="badge" id="v-badge">Build 1.5.1 Available</div>
+        <div class="hologram-viewport">
+            <div class="h-ring ring-1"></div>
+            <div class="h-ring ring-2"></div>
+            <svg class="logo-main" viewBox="0 0 100 125">
+                <path d="M72.54,36.23c-.61-5.44-4.21-8.87-7.78-11C67.54,15.88,67,10.82,67,10.82a39.26,39.26,0,0,0-9.49,10.05C59.15,13.49,56.58,5,56.58,5c-13,4.56-13.49,18.23-17.44,18.91S27.73,31.54,26.51,41.24,21,55.93,21,55.93c1.45,9.65,8.8,15.27,21,17.82C58.35,77.16,66.44,95,66.44,95,71.51,66.29,57,60.37,63.11,60.37s11.32-1.89,15.16-11.15C81.25,42.06,73.67,46.22,72.54,36.23Z"/>
+            </svg>
+        </div>
+
+        <div class="badge" id="v-badge">Build 1.5.2 Available</div>
         <h1 id="h-title">Ультимативный опыт DDNet.</h1>
-        <p id="h-desc">Безупречная производительность, глубокая кастомизация и современный дизайн. Мы создали инструмент для тех, кто стремится к совершенству в каждом движении.</p>
+        <p class="desc" id="h-desc">Безупречная производительность, глубокая кастомизация и современный дизайн. Мы создали инструмент для тех, кто стремится к совершенству в каждом движении.</p>
         
         <div class="dl-container">
             <button class="btn-main" onclick="toggleMenu(event)">
-                <i class="fas fa-arrow-down-long"></i> <span id="btn-dl">СКАЧАТЬ СЕЙЧАС</span>
+                <i class="fas fa-download"></i> <span id="btn-dl">СКАЧАТЬ СЕЙЧАС</span>
             </button>
-            <div class="dl-dropdown" id="dlDropdown">
-                <!-- Windows x64 -->
-                <div class="dl-group-label">Windows x64</div>
-                <a href="https://drive.google.com/file/d/1IUsNjYxgvEd3xRs_Ivyyk_-qCqNpEGVL/view?usp=drive_link" class="dl-link" target="_blank">
-                    <div><i class="fab fa-windows"></i> <span id="dl-full">Полный архив (.zip)</span></div>
-                    <span class="v-tag">1.5.1</span>
-                </a>
-                <a href="https://drive.google.com/file/d/1PBa_lnz4xM9Z4Qt76XK0tekKSimv2oHW/view?usp=drive_link" class="dl-link" target="_blank">
-                    <div><i class="fas fa-file-code"></i> <span id="dl-exe">Только EXE файл</span></div>
-                    <span class="v-tag">1.5.1</span>
-                </a>
+            <div class="dropdown" id="dlDropdown">
+                <div style="padding: 12px 20px; font-size: 0.65rem; color: var(--primary); font-weight: 800; opacity: 0.6;" id="cat-w64">WINDOWS x64</div>
+                <a href="https://drive.google.com/file/d/1JquJV8efodq-gMpdZOEcDbqKgMHCU-CT/view?usp=drive_link" class="dl-item" target="_blank"><span id="txt-zip64">Полный архив (.zip)</span> <small>1.5.2</small></a>
+                <a href="https://drive.google.com/file/d/1gwRc6OcofH1ghb0iOp82RqdiuJMFhm-l/view?usp=drive_link" class="dl-item" target="_blank"><span id="txt-exe64">Только EXE файл</span> <small>1.5.2</small></a>
+                
+                <div style="padding: 12px 20px; font-size: 0.65rem; color: var(--primary); font-weight: 800; opacity: 0.6;" id="cat-w32">WINDOWS x32</div>
+                <a href="https://drive.google.com/file/d/1ekIEDzvn5ykm-YeF2stGjqKKcSOVBGb2/view?usp=drive_link" class="dl-item" target="_blank"><span id="txt-zip32">Полный архив (.zip)</span> <small>1.5.2</small></a>
+                <a href="https://drive.google.com/file/d/1Aa061HuolheUZrJnmZjcy2lphtbWFWyR/view?usp=drive_link" class="dl-item" target="_blank"><span id="txt-exe32">Только EXE файл</span> <small>1.5.2</small></a>
 
-                <!-- Windows x86 -->
-                <div class="dl-group-label">Windows x32 (x86)</div>
-                <a href="https://drive.google.com/file/d/1BbCitgScC8E0iscS0ysIOVrgZCXU_bEz/view?usp=drive_link" class="dl-link" target="_blank">
-                    <div><i class="fab fa-windows"></i> <span id="dl-full-86">Полный архив (.zip)</span></div>
-                    <span class="v-tag">1.5.1</span>
-                </a>
-                <a href="https://drive.google.com/file/d/1zJ4nb5ArktDSzW3-i4Vv1h8RoJ3Ojo3A/view?usp=drive_link" class="dl-link" target="_blank">
-                    <div><i class="fas fa-file-code"></i> <span id="dl-exe-86">Только EXE файл</span></div>
-                    <span class="v-tag">1.5.1</span>
-                </a>
-
-                <!-- Linux -->
-                <div class="dl-group-label">Linux</div>
-                <a href="https://drive.google.com/file/d/1IAYWQfP1fseRGHv2wye2f5d5Xte1B5Tb/view?usp=drive_link" class="dl-link" target="_blank" style="border-bottom: none;">
-                    <div><i class="fab fa-linux"></i> <span>Koshka Client Linux</span></div>
-                    <span class="v-tag">1.5.1</span>
-                </a>
+                <div style="padding: 12px 20px; font-size: 0.65rem; color: var(--primary); font-weight: 800; opacity: 0.6;" id="cat-lin">LINUX</div>
+                <!-- Linux кнопка сделана неактивной (div вместо a, нет href, изменен курсор) -->
+                <div class="dl-item" style="border:none; opacity: 0.5; cursor: not-allowed;"><span id="txt-lin">Linux (Доступно позже)</span></div>
             </div>
         </div>
     </header>
 
-    <section class="section">
-        <div class="grid">
-            <div class="card">
-                <i class="fas fa-terminal"></i>
-                <h3 id="f1-t">Click GUI</h3>
-                <p id="f1-d">Интуитивное меню управления функциями. Настраивайте клиент прямо во время игры с помощью визуального интерфейса.</p>
-            </div>
-            <div class="card">
-                <i class="fas fa-gauge-high"></i>
-                <h3 id="f2-t">Performance</h3>
-                <p id="f2-d">Плавный геймплей со стабильным высоким FPS.</p>
-            </div>
-            <div class="card">
-                <i class="fas fa-palette"></i>
-                <h3 id="f3-t">Visuals</h3>
-                <p id="f3-d">Продвинутые визуальные настройки: от кастомных лазеров до уникальных эффектов и анимаций.</p>
-            </div>
+    <section class="grid">
+        <div class="card">
+            <i class="fas fa-terminal"></i>
+            <h3 id="f1-t">Click GUI</h3>
+            <p id="f1-d">Интуитивное меню управления функциями. Настраивайте клиент прямо во время игры с помощью визуального интерфейса.</p>
+        </div>
+        <div class="card">
+            <i class="fas fa-gauge-high"></i>
+            <h3 id="f2-t">Performance</h3>
+            <p id="f2-d">Плавный геймплей со стабильным высоким FPS.</p>
+        </div>
+        <div class="card">
+            <i class="fas fa-palette"></i>
+            <h3 id="f3-t">Visuals</h3>
+            <p id="f3-d">Продвинутые визуальные настройки: от кастомных лазеров до уникальных эффектов и анимаций.</p>
         </div>
     </section>
 
-    <section class="section" style="padding-top: 0;">
-        <h2 style="text-align: center; margin-bottom: 50px; font-size: 2rem;" id="t-title">ПРЕВЬЮ ОБНОВЛЕНИЯ</h2>
-        <div class="preview-box">
-            <div class="play-icon"><i class="fas fa-play"></i></div>
+    <section class="video-section">
+        <h2 style="margin-bottom:30px; font-size: 1.8rem;" id="t-title">ПРЕВЬЮ ОБНОВЛЕНИЯ</h2>
+        <div class="video-box">
+            <div class="play-btn"><i class="fas fa-play"></i></div>
             <p style="font-weight: 800; color: var(--primary); letter-spacing: 2px;" id="v-status">COMING SOON</p>
-            <p style="font-size: 0.9rem; color: var(--text-dim); margin-top: 10px;" id="v-desc">Официальный видеообзор версии 1.5.1 в процессе подготовки</p>
+            <p id="v-desc" style="font-size: 0.9rem; color: var(--text-dim); margin-top: 5px;">Официальный видеообзор версии 1.5.2 в процессе подготовки</p>
         </div>
     </section>
 
     <footer>
-        <div class="social-links">
-            <a href="https://t.me/KoshkaClientF" target="_blank" class="social-btn tg-btn">
-                <i class="fab fa-telegram-plane"></i> <span id="btn-tg">TELEGRAM</span>
-            </a>
-            <a href="https://discord.gg/tNPf3AP7" target="_blank" class="social-btn ds-btn">
-                <i class="fab fa-discord"></i> <span id="btn-ds">DISCORD SERVER</span>
-            </a>
+        <div class="socials">
+            <a href="https://t.me/KoshkaClientF" target="_blank" class="soc-btn"><i class="fab fa-telegram-plane"></i> <span id="ft-tg">TELEGRAM КАНАЛ</span></a>
+            <a href="https://discord.gg/MGY2HUBj" target="_blank" class="soc-btn"><i class="fab fa-discord"></i> <span id="ft-dc">DISCORD СЕРВЕР</span></a>
         </div>
-        <p style="color: var(--text-dim); font-size: 0.85rem;">&copy; 2025-2026 Koshka Client System. All Rights Reserved.</p>
+        <p style="font-size: 0.75rem; color: var(--text-dim); opacity: 0.5;">&copy; 2025 Koshka Client System. All rights reserved.</p>
     </footer>
 
     <script>
-        const translations = {
+        let curLang = 'ru';
+        const langData = {
             ru: {
-                "v-badge": "Сборка 1.5.1 Доступна",
-                "h-title": "Ультимативный опыт DDNet.",
-                "h-desc": "Безупречная производительность, глубокая кастомизация и современный дизайн. Мы создали инструмент для тех, кто стремится к совершенству в каждом движении.",
-                "btn-dl": "СКАЧАТЬ СЕЙЧАС",
-                "dl-full": "Полный архив (.zip)",
-                "dl-full-86": "Полный архив (.zip)",
-                "dl-exe": "Только EXE файл",
-                "dl-exe-86": "Только EXE файл",
-                "f1-t": "Click GUI", "f1-d": "Интуитивное меню управления функциями. Настраивайте клиент прямо во время игры с помощью визуального интерфейса.",
-                "f2-t": "Производительность", "f2-d": "Плавный геймплей со стабильным высоким FPS.",
-                "f3-t": "Визуал", "f3-d": "Продвинутые визуальные настройки: от кастомных лазеров до уникальных эффектов и анимаций.",
-                "t-title": "ПРЕВЬЮ ОБНОВЛЕНИЯ",
-                "v-status": "В МОНТАЖЕ", "v-desc": "Официальный видеообзор версии 1.5.1 скоро будет доступен.",
-                "btn-tg": "TELEGRAM КАНАЛ",
-                "btn-ds": "DISCORD СЕРВЕР"
+                badge: "Сборка 1.5.2 Доступна",
+                title: "Ультимативный опыт DDNet.",
+                desc: "Безупречная производительность, глубокая кастомизация и современный дизайн. Мы создали инструмент для тех, кто стремится к совершенству в каждом движении.",
+                btnDl: "СКАЧАТЬ СЕЙЧАС",
+                f1t: "Click GUI", f1d: "Интуитивное меню управления функциями. Настраивайте клиент прямо во время игры с помощью визуального интерфейса.",
+                f2t: "Performance", f2d: "Плавный геймплей со стабильным высоким FPS.",
+                f3t: "Visuals", f3d: "Продвинутые визуальные настройки: от кастомных лазеров до уникальных эффектов и анимаций.",
+                tt: "ПРЕВЬЮ ОБНОВЛЕНИЯ", vs: "COMING SOON", vd: "Официальный видеообзор версии 1.5.2 в процессе подготовки",
+                // Dropdown translations
+                catW64: "WINDOWS x64", zip64: "Полный архив (.zip)", exe64: "Только EXE файл",
+                catW32: "WINDOWS x32", zip32: "Полный архив (.zip)", exe32: "Только EXE файл",
+                catLin: "LINUX", txtLin: "Linux (Доступно позже)",
+                // Footer
+                ftTg: "TELEGRAM КАНАЛ", ftDc: "DISCORD СЕРВЕР"
             },
             en: {
-                "v-badge": "Build 1.5.1 Available",
-                "h-title": "Ultimate DDNet Experience.",
-                "h-desc": "Flawless performance, deep customization and modern design. We built a tool for those who strive for perfection in every move.",
-                "btn-dl": "DOWNLOAD NOW",
-                "dl-full": "Full Archive (.zip)",
-                "dl-full-86": "Full Archive (.zip)",
-                "dl-exe": "Executable Only",
-                "dl-exe-86": "Executable Only",
-                "f1-t": "Click GUI", "f1-d": "Intuitive function management menu. Customize your client on the fly with a convenient visual interface.",
-                "f2-t": "Performance", "f2-d": "Smooth gameplay with consistently high FPS.",
-                "f3-t": "Visuals", "f3-d": "Advanced visual settings: from custom lasers and hooks to unique world effects and animations.",
-                "t-title": "UPDATE PREVIEW",
-                "v-status": "COMING SOON", "v-desc": "Official v1.5.1 video review is currently under production.",
-                "btn-tg": "TELEGRAM CHANNEL",
-                "btn-ds": "DISCORD SERVER"
+                badge: "Build 1.5.2 Available",
+                title: "Ultimate DDNet Experience.",
+                desc: "Flawless performance, deep customization and modern design. We built a tool for those who strive for perfection in every move.",
+                btnDl: "DOWNLOAD NOW",
+                f1t: "Click GUI", f1d: "Intuitive management menu. Customize your client on the fly with a visual interface.",
+                f2t: "Performance", f2d: "Smooth gameplay with consistently high FPS.",
+                f3t: "Visuals", f3d: "Advanced visual settings: from custom lasers to unique effects and animations.",
+                tt: "UPDATE PREVIEW", vs: "COMING SOON", vd: "Official v1.5.2 video review is under production",
+                // Dropdown translations
+                catW64: "WINDOWS x64", zip64: "Full Archive (.zip)", exe64: "EXE File Only",
+                catW32: "WINDOWS x32", zip32: "Full Archive (.zip)", exe32: "EXE File Only",
+                catLin: "LINUX", txtLin: "Linux (Available Later)",
+                // Footer
+                ftTg: "TELEGRAM CHANNEL", ftDc: "DISCORD SERVER"
             }
         };
 
-        function setLang(lang) {
-            localStorage.setItem('k_lang', lang);
-            document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById('lang-' + lang).classList.add('active');
-            for (let key in translations[lang]) {
-                const el = document.getElementById(key);
-                if (el) el.innerText = translations[lang][key];
-            }
+        function toggleLang() {
+            curLang = curLang === 'ru' ? 'en' : 'ru';
+            const d = langData[curLang];
+            document.getElementById('v-badge').innerText = d.badge;
+            document.getElementById('h-title').innerText = d.title;
+            document.getElementById('h-desc').innerText = d.desc;
+            document.getElementById('btn-dl').innerText = d.btnDl;
+            document.getElementById('f1-t').innerText = d.f1t; document.getElementById('f1-d').innerText = d.f1d;
+            document.getElementById('f2-t').innerText = d.f2t; document.getElementById('f2-d').innerText = d.f2d;
+            document.getElementById('f3-t').innerText = d.f3t; document.getElementById('f3-d').innerText = d.f3d;
+            document.getElementById('t-title').innerText = d.tt;
+            document.getElementById('v-status').innerText = d.vs;
+            document.getElementById('v-desc').innerText = d.vd;
+            
+            // Dropdown items
+            document.getElementById('cat-w64').innerText = d.catW64;
+            document.getElementById('txt-zip64').innerText = d.zip64;
+            document.getElementById('txt-exe64').innerText = d.exe64;
+            document.getElementById('cat-w32').innerText = d.catW32;
+            document.getElementById('txt-zip32').innerText = d.zip32;
+            document.getElementById('txt-exe32').innerText = d.exe32;
+            document.getElementById('cat-lin').innerText = d.catLin;
+            document.getElementById('txt-lin').innerText = d.txtLin;
+
+            // Footer items
+            document.getElementById('ft-tg').innerText = d.ftTg;
+            document.getElementById('ft-dc').innerText = d.ftDc;
         }
-        setLang(localStorage.getItem('k_lang') || 'ru');
 
         function toggleMenu(e) {
             e.stopPropagation();
             document.getElementById('dlDropdown').classList.toggle('active');
         }
-        document.addEventListener('click', () => {
-            document.getElementById('dlDropdown').classList.remove('active');
-        });
 
-        const canvas = document.getElementById('ambient-particles');
-        const ctx = canvas.getContext('2d');
-        let w, h, dots = [];
-        function init() {
-            w = window.innerWidth; h = window.innerHeight;
-            canvas.width = w; canvas.height = h;
-            dots = Array.from({length: 45}, () => ({
-                x: Math.random()*w, y: Math.random()*h, r: Math.random()*1.5+0.5, 
-                vx: Math.random()*0.4-0.2, vy: Math.random()*0.4-0.2, o: Math.random()
-            }));
-        }
-        function draw() {
-            ctx.clearRect(0, 0, w, h);
-            dots.forEach(d => {
-                ctx.fillStyle = `rgba(46, 204, 113, ${d.o})`;
-                ctx.beginPath(); ctx.arc(d.x, d.y, d.r, 0, Math.PI*2); ctx.fill();
-                d.x += d.vx; d.y += d.vy;
-                if(d.x<0 || d.x>w) d.vx*=-1; if(d.y<0 || d.y>h) d.vy*=-1;
-            });
-            requestAnimationFrame(draw);
-        }
-        window.addEventListener('resize', init);
-        init(); draw();
+        document.onclick = () => document.getElementById('dlDropdown').classList.remove('active');
     </script>
 </body>
 </html>
